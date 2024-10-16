@@ -76,7 +76,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://jobedinwebsite-production.up.railway.app',  # Add your production URL
 ]
 TIME_ZONE = 'UTC'
-
+CSRF_COOKIE_SECURE = True  # Use secure cookies if on HTTPS
+CSRF_USE_SESSIONS = False 
 USE_I18N = True
 
 USE_TZ = True
