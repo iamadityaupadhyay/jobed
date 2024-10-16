@@ -31,7 +31,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+APPEND_SLASH=False
 CORS_ALLOWED_ORIGINS = [
     "https://jobedinwebsite-production.up.railway.app",  # Your production URL
     "https://jobed-theta.vercel.app",   # Any other trusted origin
