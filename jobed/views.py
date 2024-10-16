@@ -29,7 +29,7 @@ def register(request):
             return Response(
                 {
                     "message":"Successfully registered",
-                    "data":serializer.data
+    
                 }
                 ,
                 status=status.HTTP_201_CREATED
