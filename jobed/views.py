@@ -41,7 +41,9 @@ def register(request):
         return Response(
           {"message":"something went wrong"}
         )
-# # Login API 
-# @api_view()
-# def login(request):
-#     data= request.data
+# Login API 
+@api_view()
+def login(request):
+    # the data which came from frontend
+    
+    data= request.data
