@@ -72,7 +72,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 LANGUAGE_CODE = 'en-us'
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://jobedinwebsite-production.up.railway.app',  # Add your production URL
+]
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
