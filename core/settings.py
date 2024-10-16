@@ -54,9 +54,8 @@ import os
 import dj_database_url
 
 DATABASES = {
-    'default': {
-        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))# Replace with the port from Railway
-    }
+        'default': dj_database_url.config(default="postgresql://postgres:MbEEkAztKyrsvnYqPxRxnIfPesHDypcT@autorack.proxy.rlwy.net:20109/railway")# Replace with the port from Railway
+    
 }
 AUTH_PASSWORD_VALIDATORS = [
     {
