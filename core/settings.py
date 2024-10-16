@@ -36,6 +36,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://jobedinwebsite-production.up.railway.app",  # Your production URL
     "https://jobed-theta.vercel.app",   # Any other trusted origin
 ]
+CORS_ALLOW_CREDENTIALS = True  
 ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
