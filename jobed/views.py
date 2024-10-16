@@ -16,7 +16,6 @@ def register(request):
         # now checking that if the user exists or not in our data base
         if UserModel.objects.filter(email=email).exists():
             return Response(
-                {"message":"User already exists please register with a different email"},
                 status = status.HTTP_406_NOT_ACCEPTABLE
                 
             )
@@ -27,19 +26,12 @@ def register(request):
             serializer.save()
             print(serializer.data)
             return Response(
-                {
-                    "message":"Successfully registered",
-    
-                }
-                ,
+                
                 status=status.HTTP_201_CREATED
             ) 
-        else:
-            return Response(
-                {"message":serializer.errors}
-            )
+        
         return Response(
-          {"message":"something went wrong"}
+          status=status.HTTP_400_BAD_REQUEST
         )
 # Login API 
 @api_view()
