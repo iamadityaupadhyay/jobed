@@ -33,7 +33,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "*"  # Any other trusted origin
+    "https://jobedinwebsite-production.up.railway.app",  # Your production URL
+    "https://jobed-theta.vercel.app",   # Any other trusted origin
 ]
 ROOT_URLCONF = 'core.urls'
 
