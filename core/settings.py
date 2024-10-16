@@ -73,7 +73,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 LANGUAGE_CODE = 'en-us'
 CSRF_TRUSTED_ORIGINS = [
-    'https://jobedinwebsite-production.up.railway.app',  # Add your production URL
+   "*"  # Add your production URL
 ]
 TIME_ZONE = 'UTC'
 CSRF_COOKIE_SECURE = True  # Use secure cookies if on HTTPS
