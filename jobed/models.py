@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import *
 from cloudinary.models import CloudinaryField
 class UserModel(AbstractUser):
-     image = CloudinaryField('image',null=True ,blank=True)
+     image = models.URLField(blank=True, null=True)
      mobile_number =models.CharField(max_length=200,null=True, blank=True)
      type =models.CharField(choices=[('Recuiter','Recuiter'),('Student','Student')] ,max_length=50 ,null=True, blank=True)
      def __str__(self):
