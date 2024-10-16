@@ -1,14 +1,23 @@
 from rest_framework import serializers
-from .models import *
-# from django auth headers import make_password
-
 from django.contrib.auth.hashers import make_password
+import cloudinary.uploader
+from .models import UserModel
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model=UserModel
-        fields="__all__"
-        
-    # overwriting create function to overwrite it and hash the password it means the data which cames from the frontend after call the serializer then it will go through the create 
+        model = UserModel
+        fields = "__all__"
+
     def create(self, validated_data):
-        validated_data['password']=make_password(validated_data['password'])
-        return super(UserSerializer,self).create(validated_data)    
+        # Hash the password
+        validated_data['password'] = make_password(validated_data['password'])
+
+        # Handle the image upload with Cloudinary
+        if 'image' in validated_data:
+            image = validated_data.pop('image')
+            upload_response = cloudinary.uploader.upload(image)
+            validated_data['image'] = upload_response['url']  # Get the URL of the uploaded image
+
+        # Create the user instance with the validated data
+        user = super(UserSerializer, self).create(validated_data)
+        return user
