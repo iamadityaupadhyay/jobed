@@ -84,7 +84,7 @@ def login_view(request):
                     "refresh":str(refresh),
                     "access":str(refresh.access_token),
                     "success":True,
-                    "data":serializer.data
+                    "user":serializer.data
                 }
             )
         else:
