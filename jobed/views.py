@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 def user_profile(request):
     user = request.user
     return JsonResponse({
-        'is_logged_in': 1,
+        'is_logged_in': True,
         'username': user.username,
         'profile_photo': user.image.url if hasattr(user, 'image') else '',
         
@@ -21,9 +21,9 @@ def user_profile(request):
     
 def check_login_status(request):
     if request.user.is_authenticated:
-        return Response({'is_logged_in': 1})
+        return JsonResponse({'is_logged_in': 1})
     else:
-        return Response({'is_logged_in': 0})
+        return JsonResponse({'is_logged_in': 0})
     
 @api_view(['POST'])
 def register(request):
