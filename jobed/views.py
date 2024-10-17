@@ -19,7 +19,7 @@ def user_profile(request):
         
     })
 @api_view(['GET'])   
-@login_required(login_url="sign-in/") 
+
 def check_login_status(request):
     if request.user.is_authenticated:
         return JsonResponse({'is_logged_in': True})
