@@ -126,7 +126,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 LANGUAGE_CODE = 'en-us'
-CSRF_USE_SESSIONS = True 
+
 CSRF_TRUSTED_ORIGINS = [
     "https://jobedinwebsite-production.up.railway.app",  # Your production URL
     "https://jobed-theta.vercel.app", 
