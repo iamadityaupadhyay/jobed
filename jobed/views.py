@@ -25,12 +25,11 @@ def check_login_status(request):
         return JsonResponse({'is_logged_in': False})
     
 @api_view(['POST'])
-@csrf_exempt
 def register(request):
     try:
         data = request.data
         username = data.get('username')
-    
+        
         if UserModel.objects.filter(username=username).exists():
             return Response(
                 {"message": "User already exists"},
