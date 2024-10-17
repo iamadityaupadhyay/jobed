@@ -7,4 +7,20 @@ class UserModel(AbstractUser):
      type =models.CharField(choices=[('Recuiter','Recuiter'),('Student','Student')] ,max_length=50 ,null=True, blank=True)
      def __str__(self):
          return self.first_name
-    
+     
+class Company(models.Model):
+    company_name= models.CharField(max_length=200,null=True,blank=True)
+    logo = models.URLField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    company_address=models.TextField()
+
+    pass
+class Job(models.Model):
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    company=models.ForeignKey(Company, on_delete=models.CASCADE)
+    postition=models.CharField(max_length=200,null=True, blank=True)
+    job_title=models.ForeignKey(max_length=200,null=True, blank=True)
+    job_type=models.CharField(choices=[('Part Time','Part Time') ,('Full Time','Full Time')])
+    location =models.CharField(max_length=200,null=True,blank=True)
+    salary=models.CharField(max_length=200,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)

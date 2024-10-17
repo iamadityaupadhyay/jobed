@@ -70,11 +70,10 @@ def logout_view(request):
 def user_profile_view(request):
     if request.user.is_authenticated:
         user = request.user
+        serializer=UserModel(user)
         return Response({
-            'username': user.username,
-            'email': user.email,
-            'first_name': user.first_name,
-            'last_name': user.last_name,
+            "data":serializer.data,
+            "message":"The requested user data is"
         })
     else:
         return Response({'error': 'User not authenticated'}, status=401)
