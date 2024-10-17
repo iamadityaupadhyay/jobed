@@ -7,18 +7,16 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = "__all__"
-
+    
     def create(self, validated_data):
-        # Hash the password
-        validated_data['password'] = make_password(validated_data['password'])
-        print(validated_data)
-        # Handle the image upload with Cloudinary
+        
         if 'image' in validated_data:
             print('image')
             image = validated_data.pop('image')
             upload_response = cloudinary.uploader.upload(image)
-            validated_data['image'] = upload_response['url']  # Get the URL of the uploaded image
-        
-        # Create the user instance with the validated data
-        user = super(UserSerializer, self).create(validated_data)
+            validated_data['image'] = upload_response['url']
+        password = validated_data.pop('password')
+        user = UserModel(**validated_data)
+        user.set_password(password)
+        user.save()
         return user

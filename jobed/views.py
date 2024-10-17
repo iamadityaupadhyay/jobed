@@ -65,7 +65,7 @@ def login_view(request):
             serializer=UserSerializer(user_object)
             refresh = RefreshToken.for_user(user)
             return Response(
-                {
+                {    
                     "message":"Successfully logged in",
                     "refresh":str(refresh),
                     "access":str(refresh.access_token),
