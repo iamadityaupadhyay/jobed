@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from rest_framework_simplejwt.tokens import RefreshToken
 @login_required
 def user_profile(request):
     user = request.user
@@ -54,47 +55,43 @@ def register(request):
         )
 
 @api_view(['POST'])
-@csrf_exempt
+
 def login_view(request):
-    try:
-        username = request.data.get('username')
-        password = request.data.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request,user)
-            return Response({
-                "message": "Login successful",
-                "user": {
-                    "id": user.id,
-                    "username": user.username,
-                    "email": user.email,
-                    "type":user.type,
-                    "is_logged_in":True
-                }
-            }, status=200)
-        else:
-            return Response({'error': 'Invalid Credentials'}, status=400)
-    except Exception as e:
+    data = request.data
+    username=data.get("username")
+    password=data.get("password")
+    user = authenticate(request,username=username,password =password)
+    if user is not None:
+        refresh = RefreshToken.for_user(user)
         return Response(
             {
-                "message":"something went wrong",
-                "error":str(e)
-            },
-            status=400
+                "message":"Successfully logged in",
+                "refresh":str(refresh),
+                "access":str(refresh.access_token)
+            }
         )
+    else:
+        return Response(
+            {"message":"Invalid Credentials"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+        
 @api_view(['POST'])
-@csrf_exempt
 def logout_view(request):
     try:
-        if request.user.is_authenticated:
-            print(request)
-            logout(request)
-            return Response({'message': 'Logged out successfully'}, status=200)
-        return Response({'error': 'User is not logged in'}, status=400)
+        refresh = request.data.get('refresh')
+        token=RefreshToken(refresh)
+        token.blacklist()
+        return Response(
+            {"message":"Successfully logged out"},
+            status=status.HTTP_200_OK
+        )
     except Exception as e:
         return Response(
-            {"message":"logout error","error":str(e)}
+            {"message":"Something went wrong, please try again", "error":str(e)},
+            status=status.HTTP_400_BAD_REQUEST
         )
+        
 
 @api_view(['GET'])
 def get_user_data(request):
