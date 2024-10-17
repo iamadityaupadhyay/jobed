@@ -17,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
             image = validated_data.pop('image')
             upload_response = cloudinary.uploader.upload(image)
             validated_data['image'] = upload_response['url']  # Get the URL of the uploaded image
-
+        
         # Create the user instance with the validated data
         user = super(UserSerializer, self).create(validated_data)
         return user

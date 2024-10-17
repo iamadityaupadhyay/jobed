@@ -13,10 +13,10 @@ def register(request):
     # the data will come from frontend in the form of json
     try:
         data =request.data
-        email=data.get('email')
+        username=data.get('username')
         # now checking that if the user exists or not in our data base
         
-        if UserModel.objects.filter(email=email).exists():
+        if UserModel.objects.filter(username=username).exists():
             return Response(
                 {"message":"User is already exists"},
                 status = status.HTTP_400_BAD_REQUEST
