@@ -13,14 +13,15 @@ def register(request):
     try:
         data = request.data
         username = data.get('username')
-
+    
         if UserModel.objects.filter(username=username).exists():
             return Response(
                 {"message": "User already exists"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
+        
         serializer = UserSerializer(data=data)
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
             return Response(

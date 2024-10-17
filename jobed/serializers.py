@@ -11,9 +11,10 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Hash the password
         validated_data['password'] = make_password(validated_data['password'])
-
+        print(validated_data)
         # Handle the image upload with Cloudinary
         if 'image' in validated_data:
+            print('image')
             image = validated_data.pop('image')
             upload_response = cloudinary.uploader.upload(image)
             validated_data['image'] = upload_response['url']  # Get the URL of the uploaded image
