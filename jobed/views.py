@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 def user_profile(request):
     user = request.user
     return JsonResponse({
-        'is_logged_in': True,
+        'is_logged_in': 1,
         'username': user.username,
         'profile_photo': user.image.url if hasattr(user, 'image') else '',
         
