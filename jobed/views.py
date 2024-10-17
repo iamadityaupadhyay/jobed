@@ -81,7 +81,8 @@ def login_view(request):
                     "message":"Successfully logged in",
                     "refresh":str(refresh),
                     "access":str(refresh.access_token),
-                    "success":True
+                    "success":True,
+                    "data":user
                 }
             )
         else:
@@ -92,8 +93,10 @@ def login_view(request):
             )
     except Exception as e:
         return Response(
-            {"message":"Something went wrong, please try again", "error":str(e)},
-            status=status.HTTP_400_BAD_REQUEST
+            {"message":"Something went wrong, please try again", 
+             "error":str(e),
+             "success":False
+            }, 
         )   
 @api_view(['POST'])
 def logout_view(request):
@@ -108,8 +111,10 @@ def logout_view(request):
         )
     except Exception as e:
         return Response(
-            {"message":"Something went wrong, please try again", "error":str(e)},
-            status=status.HTTP_400_BAD_REQUEST
+            {"message":"Something went wrong, please try again", 
+             "success":False,
+             "error":str(e)},
+           
         )
         
 
