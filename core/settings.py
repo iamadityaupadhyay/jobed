@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',  # For Google OAuth
-    'allauth.socialaccount.providers.linkedin_oauth2',
+    'allauth.socialaccount.providers.github',
     'rest_framework_simplejwt',
     'sslserver',
     'corsheaders'
