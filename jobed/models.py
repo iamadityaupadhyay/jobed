@@ -16,8 +16,8 @@ class Company(models.Model):
 
     pass
 class Job(models.Model):
-    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    company=models.ForeignKey(Company, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE,related_name="user_job")
+    company=models.ForeignKey(Company, on_delete=models.CASCADE,related_name="job_company")
     postition=models.CharField(max_length=200,null=True, blank=True)
     job_title=models.ForeignKey(max_length=200,null=True, blank=True)
     job_type=models.CharField(choices=[('Part Time','Part Time') ,('Full Time','Full Time')])
