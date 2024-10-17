@@ -21,9 +21,9 @@ def user_profile(request):
     
 def check_login_status(request):
     if request.user.is_authenticated:
-        return JsonResponse({'is_logged_in': 1})
+        return JsonResponse({'is_logged_in': True})
     else:
-        return JsonResponse({'is_logged_in': 0})
+        return JsonResponse({'is_logged_in': False})
     
 @api_view(['POST'])
 def register(request):
