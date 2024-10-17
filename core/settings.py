@@ -17,11 +17,33 @@ INSTALLED_APPS = [
     'jobed',
     'cloudinary',
     'cloudinary_storage',
-   
+    'django.contrib.sites',  # Required for django-allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',  # For Google OAuth
+    'allauth.socialaccount.providers.linkedin_oauth2',
     'rest_framework_simplejwt',
-    'sslserver'
+    'sslserver',
+
 
 ]
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = False  
+SITE_ID = 1
+
+# Authentication backends
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # Default auth backend
+    'allauth.account.auth_backends.AuthenticationBackend',  # Required for allauth
+)
+
+# Define login redirect URLs
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+# Configure any email-related settings for account verification (optional)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For testing
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.security.SecurityMiddleware',
@@ -32,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 APPEND_SLASH=False
 CORS_ALLOWED_ORIGINS = [
     "https://jobedinwebsite-production.up.railway.app",  # Your production URL

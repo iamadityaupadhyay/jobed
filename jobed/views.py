@@ -11,7 +11,7 @@ from .serializers import *
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,login , logout
 @api_view(['POST'])
 def register(request):
    
@@ -47,22 +47,22 @@ def register(request):
 
 
 @api_view(['POST'])
-def login(request):
+def login_view(request):
     username = request.data.get('username')
     password = request.data.get('password')
     
-    user = authenticate(username=username, password=password)
+    user = authenticate(request,username=username, password=password)
     
     if user is not None:
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            'refresh_token': str(refresh),
-            'access_token': str(refresh.access_token),
-        })
+        login(request,user)
+        return Response(
+            {"message":"login successfull" ,"data":user},
+            status=200
+        )
     else:
         return Response({'error': 'Invalid Credentials'}, status=400)
 
 @api_view(['POST'])
 def logout_view(request):
-    # Optionally handle token blacklist here
+    logout(request)
     return Response({'message': 'Logged out successfully'}, status=200)

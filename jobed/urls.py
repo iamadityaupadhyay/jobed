@@ -5,6 +5,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path("register/",register),
-    path("login/",login)
+    path("login/",login_view),
+    path("logout/",logout_view),
+    
+    path('accounts/', include('allauth.urls')),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
