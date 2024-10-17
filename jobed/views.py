@@ -25,7 +25,7 @@ def register(request):
             )
         
         serializer = UserSerializer(data=data)
-        print(serializer)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(
@@ -50,7 +50,7 @@ def register(request):
              
              },
         )
-
+from django.shortcuts import get_object_or_404
 @api_view(['POST'])
 
 def login_view(request):
@@ -58,27 +58,38 @@ def login_view(request):
         data = request.data
         username=data.get("username")
         password=data.get("password")
-        user = authenticate(request,username=username,password=password)
-        print(user)
-        if user is not None:
-            user_object=UserModel.objects.get(username=username)
-            serializer=UserSerializer(user_object)
-            refresh = RefreshToken.for_user(user)
+        try :
+           user = get_object_or_404(UserModel,username=username)
+           if user:
+                serializer=UserSerializer(user)
+              
+                if user.password ==password:
+                    refresh = RefreshToken.for_user(user)
+                 
+                    return Response(
+                    {    
+                        "message":"Successfully logged in",
+                        "refresh":str(refresh),
+                        "access":str(refresh.access_token),
+                        "success":True,
+                        "user":serializer.data
+                    }
+                )
+                else:
+                    return Response(
+                        {"message":"Invalid Credentials",
+                        "success":False
+                        },
+                    )
+        except Exception as e:
             return Response(
-                {    
-                    "message":"Successfully logged in",
-                    "refresh":str(refresh),
-                    "access":str(refresh.access_token),
-                    "success":True,
-                    "user":serializer.data
-                }
+                {"message":"Something went wrong, please try again",
+                 "success":False
+                 },
             )
-        else:
-            return Response(
-                {"message":"Invalid Credentials",
-                "success":False
-                },
-            )
+           
+            
+        
     except UserModel.DoesNotExist:
         return Response(
             {"message": "User does not exist",
