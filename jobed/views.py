@@ -16,13 +16,14 @@ def user_profile(request):
         'is_logged_in': True,
         'username': user.username,
         'profile_photo': user.image.url if hasattr(user, 'image') else '',
+        
     })
     
 def check_login_status(request):
     if request.user.is_authenticated:
-        return JsonResponse({'is_logged_in': True})
+        return Response({'is_logged_in': True})
     else:
-        return JsonResponse({'is_logged_in': False})
+        return Response({'is_logged_in': False})
     
 @api_view(['POST'])
 def register(request):
@@ -67,7 +68,8 @@ def login_view(request):
                     "id": user.id,
                     "username": user.username,
                     "email": user.email,
-                    "type":user.type
+                    "type":user.type,
+                    "is_logged_in":True
                 }
             }, status=200)
         else:
