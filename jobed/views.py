@@ -15,7 +15,7 @@ def user_profile(request):
     return JsonResponse({
         'is_logged_in': True,
         'username': user.username,
-        'profile_photo': user.profile.profile_photo.url if hasattr(user, 'profile') else '',
+        'profile_photo': user.image.url if hasattr(user, 'image') else '',
     })
     
 def check_login_status(request):
