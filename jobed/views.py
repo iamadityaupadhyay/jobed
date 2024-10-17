@@ -24,7 +24,7 @@ def check_login_status(request):
     if request.user.is_authenticated:
         return JsonResponse({'is_logged_in': True})
     else:
-        return JsonResponse({'is_logged_in': True})
+        return JsonResponse({'is_logged_in': False})
     
 @api_view(['POST'])
 def register(request):
@@ -82,14 +82,19 @@ def login_view(request):
             },
             status=400
         )
-@csrf_exempt
 @api_view(['POST'])
+@csrf_exempt
 def logout_view(request):
-    if request.user.is_authenticated:
-        print(request)
-        logout(request)
-        return Response({'message': 'Logged out successfully'}, status=200)
-    return Response({'error': 'User is not logged in'}, status=400)
+    try:
+        if request.user.is_authenticated:
+            print(request)
+            logout(request)
+            return Response({'message': 'Logged out successfully'}, status=200)
+        return Response({'error': 'User is not logged in'}, status=400)
+    except Exception as e:
+        return Response(
+            {"message":"logout error","error":str(e)}
+        )
 
 @api_view(['GET'])
 def get_user_data(request):

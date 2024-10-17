@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',  
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     "allauth.account.middleware.AccountMiddleware",
@@ -62,17 +62,19 @@ CORS_ALLOWED_ORIGINS = [
     "https://jobedinwebsite-production.up.railway.app",  # Your production URL
     "https://jobed-theta.vercel.app",  
     "http://localhost:5173",
+    "https://127.1.1.0:8000",
+    "http://127.1.1.0:8000",
+    
     # Any other trusted origin
 ]
 CORS_ALLOW_CREDENTIALS = True  
 ROOT_URLCONF = 'core.urls'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = None  # or 'Lax', depending on your setup
-SESSION_COOKIE_SECURE = True    # Ensure this matches your setup (True for HTTPS)
-CSRF_COOKIE_SECURE = True 
+
 from decouple import config
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
