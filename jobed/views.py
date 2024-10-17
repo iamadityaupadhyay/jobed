@@ -68,7 +68,7 @@ def logout_view(request):
 def user_profile_view(request):
     if request.user.is_authenticated:
         user = request.user
-        serializer=UserModel(user)
+        serializer=UserSerializer(user)
         return Response({
             "data":serializer.data,
             "message":"The requested user data is"
