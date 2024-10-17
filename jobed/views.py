@@ -63,17 +63,6 @@ def logout_view(request):
     return Response({'error': 'User is not logged in'}, status=400)
 
 @api_view(['GET'])
-def user_profile_view(request):
-    if request.user.is_authenticated:
-        user = request.user
-        serializer = UserSerializer(user)
-        return Response({
-            "data": serializer.data,
-            "message": "The requested user data"
-        })
-    return Response({'error': 'User not authenticated'}, status=401)
-
-@api_view(['GET'])
 def get_user_data(request):
     if request.user.is_authenticated:
         user = request.user

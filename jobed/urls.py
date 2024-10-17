@@ -7,7 +7,6 @@ urlpatterns = [
     path("register/",register),
     path("login/",login_view),
     path("logout/",logout_view),
-    path("user-profile/",user_profile_view),
     path('accounts/', include('allauth.urls')),
     path('user-data/', get_user_data, name='user_data'),
 
