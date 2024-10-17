@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.linkedin_oauth2',
     'rest_framework_simplejwt',
     'sslserver',
+    'corsheaders'
 
 
 ]
