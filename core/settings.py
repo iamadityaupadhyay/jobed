@@ -126,9 +126,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 LANGUAGE_CODE = 'en-us'
+CSRF_USE_SESSIONS = True 
 CSRF_TRUSTED_ORIGINS = [
     "https://jobedinwebsite-production.up.railway.app",  # Your production URL
-    "https://jobed-theta.vercel.app",  # Your Vercel app, if needed
+    "https://jobed-theta.vercel.app", 
+    "https://127.0.0.1:8000",
+    # Your Vercel app, if needed
 ]
 TIME_ZONE = 'UTC'
 CSRF_COOKIE_SECURE = True  # Use secure cookies if on HTTPS

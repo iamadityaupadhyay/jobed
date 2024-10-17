@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
+
 @api_view(['POST'])
 def register(request):
     try:
@@ -35,8 +36,8 @@ def register(request):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-@csrf_exempt
 @api_view(['POST'])
+@csrf_exempt
 def login_view(request):
     try:
         username = request.data.get('username')
@@ -50,7 +51,8 @@ def login_view(request):
                 "user": {
                     "id": user.id,
                     "username": user.username,
-                    "email": user.email
+                    "email": user.email,
+                    "type":user.type
                 }
             }, status=200)
         else:
@@ -63,10 +65,11 @@ def login_view(request):
             },
             status=400
         )
-
+@csrf_exempt
 @api_view(['POST'])
 def logout_view(request):
     if request.user.is_authenticated:
+        print(request)
         logout(request)
         return Response({'message': 'Logged out successfully'}, status=200)
     return Response({'error': 'User is not logged in'}, status=400)
