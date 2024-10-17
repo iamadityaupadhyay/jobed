@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     'jobed',
     'cloudinary',
     'cloudinary_storage',
-    'django.contrib.sites',  # Required for django-allauth
+    'django.contrib.sites',  
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
