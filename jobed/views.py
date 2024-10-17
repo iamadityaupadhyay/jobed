@@ -37,7 +37,6 @@ def register(request):
 
 @method_decorator(csrf_exempt, name='dispatch')
 @api_view(['POST'])
-@permission_classes([AllowAny])
 def login_view(request):
     username = request.data.get('username')
     password = request.data.get('password')
