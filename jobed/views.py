@@ -11,12 +11,14 @@ from .serializers import *
 def register(request):
    
     # the data will come from frontend in the form of json
+    try:
         data =request.data
         email=data.get('email')
         # now checking that if the user exists or not in our data base
         if UserModel.objects.filter(email=email).exists():
             return Response(
-                status = status.HTTP_406_NOT_ACCEPTABLE
+                {"message":"User is already exists"},
+                status = status.HTTP_400_BAD_REQUEST
                 
             )
         
@@ -26,10 +28,12 @@ def register(request):
             serializer.save()
             print(serializer.data)
             return Response(
-                
+                {"message":"Successfully Created",
+                 "data":serializer.data
+                },
                 status=status.HTTP_201_CREATED
             ) 
-        
+    except:   
         return Response(
           status=status.HTTP_400_BAD_REQUEST
         )
