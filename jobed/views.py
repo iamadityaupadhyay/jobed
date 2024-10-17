@@ -15,6 +15,7 @@ def register(request):
         data =request.data
         email=data.get('email')
         # now checking that if the user exists or not in our data base
+        
         if UserModel.objects.filter(email=email).exists():
             return Response(
                 {"message":"User is already exists"},
@@ -35,6 +36,7 @@ def register(request):
             ) 
     except:   
         return Response(
+            {"message":"Something went wrong please try again"},
           status=status.HTTP_400_BAD_REQUEST
         )
 # Login API 
