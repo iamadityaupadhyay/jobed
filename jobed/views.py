@@ -18,7 +18,7 @@ def user_profile(request):
         'profile_photo': user.image.url if hasattr(user, 'image') else '',
         
     })
-    
+@api_view(['GET'])    
 def check_login_status(request):
     if request.user.is_authenticated:
         return JsonResponse({'is_logged_in': True})
