@@ -6,6 +6,7 @@ AUTH_USER_MODEL = 'jobed.UserModel'
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -16,7 +17,7 @@ INSTALLED_APPS = [
     'jobed',
     'cloudinary',
     'cloudinary_storage',
-    'jazzmin',
+   
     'rest_framework_simplejwt',
     'sslserver'
 
@@ -34,7 +35,9 @@ MIDDLEWARE = [
 APPEND_SLASH=False
 CORS_ALLOWED_ORIGINS = [
     "https://jobedinwebsite-production.up.railway.app",  # Your production URL
-    "https://jobed-theta.vercel.app",   # Any other trusted origin
+    "https://jobed-theta.vercel.app",  
+    "http://localhost:5173",
+    # Any other trusted origin
 ]
 CORS_ALLOW_CREDENTIALS = True  
 ROOT_URLCONF = 'core.urls'
@@ -100,21 +103,19 @@ import cloudinary.uploader
 import cloudinary.api
 from cloudinary_storage.storage import MediaCloudinaryStorage
 from cloudinary_storage.storage import VideoMediaCloudinaryStorage
+
+# Load environment variables
 load_dotenv()
+
 # Cloudinary configuration
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
-}
+cloudinary.config( 
+  cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'), 
+  api_key=os.getenv('CLOUDINARY_API_KEY'), 
+  api_secret=os.getenv('CLOUDINARY_API_SECRET') 
+)
 
+# Django Cloudinary storage setup
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
-}
 
 # jwt 
 from datetime import timedelta
@@ -126,11 +127,11 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1000),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': 'your-secret-key',
+    'SIGNING_KEY': 'django-insecure-8(#@uu1-h_8nsp&h7n=m#dw8s8-x^+ou8ieg(*=v_=qtvlv^fh',
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
