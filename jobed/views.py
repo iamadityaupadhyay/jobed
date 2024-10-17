@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import *
 from rest_framework.response import Response
 # Create your views here.
 from rest_framework.decorators import *
@@ -45,7 +45,10 @@ def register(request):
           status=status.HTTP_400_BAD_REQUEST
         )
 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
+@method_decorator(csrf_exempt, name='dispatch')
 @api_view(['POST'])
 def login_view(request):
     username = request.data.get('username')
@@ -53,10 +56,14 @@ def login_view(request):
     user = authenticate(username=username, password=password)
     if user is not None:
         login(request,user)
-        return Response(
-            {"message":"login successfull" ,"data":user},
-            status=200
-        )
+        return Response({
+            "message": "Login successful",
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email
+            }
+        }, status=200)
     else:
         return Response({'error': 'Invalid Credentials'}, status=400)
 
@@ -75,3 +82,25 @@ def user_profile_view(request):
         })
     else:
         return Response({'error': 'User not authenticated'}, status=401)
+    
+@require_GET
+@login_required
+def get_user_data(request):
+    user = request.user
+    try:
+        social_account = user.socialaccount_set.get(provider='google')
+        extra_data = social_account.extra_data
+        return Response({
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'google_data': {
+                'name': extra_data.get('name'),
+                'picture': extra_data.get('picture'),
+                'email': extra_data.get('email'),
+            }
+        })
+    except Exception as e:
+        return Response({'error': str(e)}, status=400)
