@@ -10,11 +10,9 @@ class UserModel(AbstractUser):
      
 class Company(models.Model):
     company_name= models.CharField(max_length=200,null=True,blank=True)
-    logo = models.URLField(null=True, blank=True)
+    image = CloudinaryField('image', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    company_address=models.TextField()
-
-    pass
+    company_address=models.TextField(null=True,blank=True)
 class Job(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE,related_name="user_job")
     company=models.ForeignKey(Company, on_delete=models.CASCADE,related_name="job_company")

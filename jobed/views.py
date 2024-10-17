@@ -10,23 +10,8 @@ from django.utils.decorators import method_decorator
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from rest_framework_simplejwt.tokens import RefreshToken
-@login_required
-def user_profile(request):
-    user = request.user
-    return JsonResponse({
-        'is_logged_in': True,
-        'username': user.username,
-        'profile_photo': user.image.url if hasattr(user, 'image') else '',
-        
-    })
-@api_view(['GET'])   
 
-def check_login_status(request):
-    if request.user.is_authenticated:
-        return JsonResponse({'is_logged_in': True})
-    else:
-        return JsonResponse({'is_logged_in': False})
-    
+
 @api_view(['POST'])
 def register(request):
     try:
@@ -73,10 +58,11 @@ def login_view(request):
         data = request.data
         username=data.get("username")
         password=data.get("password")
-        user_object=UserModel.objects.get(username=username)
-        serializer=UserSerializer(user_object)
         user = authenticate(request,username=username,password=password)
+        print(user)
         if user is not None:
+            user_object=UserModel.objects.get(username=username)
+            serializer=UserSerializer(user_object)
             refresh = RefreshToken.for_user(user)
             return Response(
                 {
@@ -93,6 +79,13 @@ def login_view(request):
                 "success":False
                 },
             )
+    except UserModel.DoesNotExist:
+        return Response(
+            {"message": "User does not exist",
+             "success": False
+            },
+            status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
         return Response(
             {"message":"Something went wrong, please try again", 

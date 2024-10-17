@@ -9,8 +9,6 @@ urlpatterns = [
     path("logout/",logout_view),
     path('accounts/', include('allauth.urls')),
     path('user-data/', get_user_data, name='user_data'),
-    path('user-profile/', user_profile, name='user-profile'),
-    path('check-login/', check_login_status, name='check-login'),
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
