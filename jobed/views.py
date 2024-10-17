@@ -46,8 +46,8 @@ def register(request):
         )
 
 
-@api_view(['POST'])
-def login_view(request):
+@api_view()
+def login(request):
     username = request.data.get('username')
     password = request.data.get('password')
     
