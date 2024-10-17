@@ -50,9 +50,10 @@ def register(request):
         )
 
 from django.views.decorators.http import require_GET
-
+from rest_framework.permissions import AllowAny
 @method_decorator(csrf_exempt, name='dispatch')
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def login_view(request):
     username = request.data.get('username')
     password = request.data.get('password')
@@ -88,6 +89,7 @@ def user_profile_view(request):
     
 @require_GET
 @login_required
+@api_view(['GET'])
 def get_user_data(request):
     user = request.user
     try:
