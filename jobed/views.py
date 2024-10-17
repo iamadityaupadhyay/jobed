@@ -73,6 +73,8 @@ def login_view(request):
         data = request.data
         username=data.get("username")
         password=data.get("password")
+        user_object=UserModel.objects.get(username=username)
+        serializer=UserSerializer(user_object)
         user = authenticate(request,username=username,password=password)
         if user is not None:
             refresh = RefreshToken.for_user(user)
@@ -82,7 +84,7 @@ def login_view(request):
                     "refresh":str(refresh),
                     "access":str(refresh.access_token),
                     "success":True,
-                    "data":user
+                    "data":serializer.data
                 }
             )
         else:
