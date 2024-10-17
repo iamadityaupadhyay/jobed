@@ -35,25 +35,34 @@ def register(request):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-@method_decorator(csrf_exempt, name='dispatch')
+@csrf_exempt
 @api_view(['POST'])
 def login_view(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
+    try:
+        username = request.data.get('username')
+        password = request.data.get('password')
 
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request,user)
-        return Response({
-            "message": "Login successful",
-            "user": {
-                "id": user.id,
-                "username": user.username,
-                "email": user.email
-            }
-        }, status=200)
-    else:
-        return Response({'error': 'Invalid Credentials'}, status=400)
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request,user)
+            return Response({
+                "message": "Login successful",
+                "user": {
+                    "id": user.id,
+                    "username": user.username,
+                    "email": user.email
+                }
+            }, status=200)
+        else:
+            return Response({'error': 'Invalid Credentials'}, status=400)
+    except Exception as e:
+        return Response(
+            {
+                "message":"something went wrong",
+                "error":str(e)
+            },
+            status=400
+        )
 
 @api_view(['POST'])
 def logout_view(request):
