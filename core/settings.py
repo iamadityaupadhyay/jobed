@@ -40,8 +40,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Define login redirect URLs
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'https://jobed-theta.vercel.app/'
+LOGOUT_REDIRECT_URL = 'https://jobed-theta.vercel.app/'
 
 # Configure any email-related settings for account verification (optional)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For testing
@@ -56,7 +56,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 APPEND_SLASH=False
 CORS_ALLOWED_ORIGINS = [
     "https://jobedinwebsite-production.up.railway.app",  # Your production URL
