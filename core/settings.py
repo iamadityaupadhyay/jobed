@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'rest_framework_simplejwt',
     'sslserver',
-    'corsheaders'
+    'corsheaders',
+    'rest_framework_simplejwt.token_blacklist'
 
 
 ]

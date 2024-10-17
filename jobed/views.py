@@ -44,38 +44,57 @@ def register(request):
         if serializer.is_valid():
             serializer.save()
             return Response(
-                {"message": "Successfully Created", "data": str(serializer.data)},
-                status=status.HTTP_201_CREATED
+                {   "success":True,
+                    "message": "Successfully Created", 
+                    "data": serializer.data,
+                },
+               
             )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {
+           "error": serializer.errors,
+            "success":False,
+            "message": "Something went wrong, please try again"
+           }
+            )
     except Exception as e:   
         return Response(
-            {"message": "Something went wrong, please try again", "error": str(e)},
-            status=status.HTTP_400_BAD_REQUEST
+            {"message": "Something went wrong, please try again", 
+             "error": str(e),
+            "success":False
+             
+             },
         )
 
 @api_view(['POST'])
 
 def login_view(request):
-    data = request.data
-    username=data.get("username")
-    password=data.get("password")
-    user = authenticate(request,username=username,password =password)
-    if user is not None:
-        refresh = RefreshToken.for_user(user)
+    try:
+        data = request.data
+        username=data.get("username")
+        password=data.get("password")
+        user = authenticate(request,username=username,password=password)
+        if user is not None:
+            refresh = RefreshToken.for_user(user)
+            return Response(
+                {
+                    "message":"Successfully logged in",
+                    "refresh":str(refresh),
+                    "access":str(refresh.access_token),
+                    "success":True
+                }
+            )
+        else:
+            return Response(
+                {"message":"Invalid Credentials",
+                "success":False
+                },
+            )
+    except Exception as e:
         return Response(
-            {
-                "message":"Successfully logged in",
-                "refresh":str(refresh),
-                "access":str(refresh.access_token)
-            }
-        )
-    else:
-        return Response(
-            {"message":"Invalid Credentials"},
+            {"message":"Something went wrong, please try again", "error":str(e)},
             status=status.HTTP_400_BAD_REQUEST
-        )
-        
+        )   
 @api_view(['POST'])
 def logout_view(request):
     try:
@@ -83,8 +102,9 @@ def logout_view(request):
         token=RefreshToken(refresh)
         token.blacklist()
         return Response(
-            {"message":"Successfully logged out"},
-            status=status.HTTP_200_OK
+            {"message":"Successfully logged out",
+             "success":True},
+           
         )
     except Exception as e:
         return Response(
