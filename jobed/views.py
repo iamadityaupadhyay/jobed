@@ -4,7 +4,6 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .serializers import UserSerializer
-from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -43,7 +42,7 @@ def login_view(request):
 
     user = authenticate(request, username=username, password=password)
     if user is not None:
-        login(request, user)
+        login(request,user)
         return Response({
             "message": "Login successful",
             "user": {
