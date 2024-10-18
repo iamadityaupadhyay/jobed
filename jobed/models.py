@@ -9,10 +9,13 @@ class UserModel(AbstractUser):
      image = CloudinaryField('image', blank=True, null=True)
      mobile_number =models.CharField(max_length=200,null=True, blank=True)
      type =models.CharField(choices=USER_TYPE_CHOICES ,max_length=50 ,null=True, blank=True)
+     groups = models.ManyToManyField(Group, blank=True)
      def __str__(self):
          return self.first_name
-     
+    
+
 class Company(models.Model):
+    user=models.ForeignKey(UserModel,on_delete=models.CASCADE,null=True, blank=True)
     company_name= models.CharField(max_length=200,null=True,blank=True)
     image = CloudinaryField('image', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

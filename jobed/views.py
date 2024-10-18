@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import *
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -17,6 +17,7 @@ def register(request):
     try:
         data = request.data
         username = data.get('username')
+        type=data.get("type")
         
         if UserModel.objects.filter(username=username).exists():
             return Response(
@@ -59,6 +60,7 @@ def login_view(request):
         data = request.data
         username=data.get("username")
         password=data.get("password")
+      
         try :
            user = get_object_or_404(UserModel,username=username)
            if user:

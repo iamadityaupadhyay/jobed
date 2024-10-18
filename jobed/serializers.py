@@ -9,13 +9,35 @@ class UserSerializer(serializers.ModelSerializer):
         fields = "__all__"
     
     def create(self, validated_data):
-        try:
-            if 'image' in validated_data:
-                image = validated_data.pop('image')
-                upload_response = cloudinary.uploader.upload(image)
-                validated_data['image'] = upload_response['url']
-            
-            return super(UserSerializer, self).create(validated_data)
-        
-        except Exception as e:
-            raise e
+     try:
+        # Handle image upload with Cloudinary
+        if 'image' in validated_data:
+            image = validated_data.pop('image')
+            upload_response = cloudinary.uploader.upload(image)
+            validated_data['image'] = upload_response['url']
+
+        # Pop groups and user_permissions from validated_data
+        groups = validated_data.pop('groups', None)  # Extract groups
+        user_permissions = validated_data.pop('user_permissions', None)  # Extract user_permissions
+
+        # Create the user object
+        user = UserModel(**validated_data)
+
+        # Set the user as staff if the type is 'Recruiter'
+        if validated_data['type'] == 'Recruiter':
+            user.is_staff = True
+
+
+        user.save()
+
+ 
+        if groups is not None:
+            user.groups.set(groups) 
+
+
+        if user_permissions is not None:
+            user.user_permissions.set(user_permissions)
+
+        return user
+     except Exception as e:
+        raise serializers.ValidationError(f"Error creating user: {str(e)}")
