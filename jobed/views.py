@@ -28,6 +28,7 @@ def register(request):
         
         if serializer.is_valid():
             serializer.save()
+            print(serializer.data)
             return Response(
                 {   "success":True,
                     "message": "Successfully Created", 
@@ -62,17 +63,16 @@ def login_view(request):
            user = get_object_or_404(UserModel,username=username)
            if user:
                 serializer=UserSerializer(user)
-              
                 if user.password ==password:
                     refresh = RefreshToken.for_user(user)
-                 
                     return Response(
                     {    
                         "message":"Successfully logged in",
                         "refresh":str(refresh),
                         "access":str(refresh.access_token),
                         "success":True,
-                        "user":serializer.data
+                        "user":serializer.data,
+                        
                     }
                 )
                 else:
