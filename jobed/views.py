@@ -160,7 +160,7 @@ def get_companies(request):
             {
                 "message":"Here is all the companies",
                 "success":"True",
-                "data":serializer.data
+                "comapnies":serializer.data
             }
         )
 @api_view(["GET"])
@@ -174,7 +174,7 @@ def get_company_by_id(request,id):
             {
                 "message":"Here is the requested objects",
                 "success":True,
-                "data":serializers.data
+                "company":serializers.data
             }
         )
     except Exception as e:
@@ -187,13 +187,13 @@ def get_company_by_id(request,id):
         )
 @api_view(['GET'])
 def get_job(request):
-    job=get_list_or_404(Job)
+    job=Job.objects.all()
     serializers=JobSerializer(job,many=True)
     return Response(
         {
             "message":"Here is all the data",
             "success":True,
-            "data":serializers.data
+            "jobs":serializers.data
         }
     )
 def get_job_by_id(request,id):
@@ -203,7 +203,7 @@ def get_job_by_id(request,id):
         {
             "message":"Here is the data",
             "success":True,
-            "data":serializers.data
+            "job":serializers.data
         }
     )
 def applied_jobs(request, id):
@@ -213,6 +213,6 @@ def applied_jobs(request, id):
         {
             "message":"Here is all the data",
             "success":True,
-            "data":serializers.data
+            "job":serializers.data
         }
     )
