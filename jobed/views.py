@@ -1,17 +1,12 @@
-from django.shortcuts import render,redirect
+
 from .models import *
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from .serializers import UserSerializer
-from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.http import JsonResponse
+from .serializers import *
 from django.contrib.auth.decorators import login_required
 from rest_framework_simplejwt.tokens import RefreshToken
-
-
+from django.shortcuts import *
 @api_view(['POST'])
 def register(request):
     try:
@@ -150,3 +145,74 @@ def get_user_data(request):
         except Exception as e:
             return Response({'error': str(e)}, status=400)
     return Response({'error': 'User not authenticated'}, status=401)
+
+
+
+# Companies 
+from rest_framework.views import APIView
+
+@api_view(["GET"])
+def get_companies(request):
+        companies= Company.objects.all()
+        # using serializer to convert the data into json
+        serializer = CompanySerializer(companies,many=True)
+        return Response(
+            {
+                "message":"Here is all the companies",
+                "success":"True",
+                "data":serializer.data
+            }
+        )
+@api_view(["GET"])
+def get_company_by_id(request,id):
+    try:
+        
+        company = get_object_or_404(Company,id=id)
+        
+        serializers=CompanySerializer(company)
+        return Response(
+            {
+                "message":"Here is the requested objects",
+                "success":True,
+                "data":serializers.data
+            }
+        )
+    except Exception as e:
+        return Response(
+            {
+                "message":"Sorry something went wrong",
+                "error":str(e),
+                "success":False
+            }
+        )
+@api_view(['GET'])
+def get_job(request):
+    job=get_list_or_404(Job)
+    serializers=JobSerializer(job,many=True)
+    return Response(
+        {
+            "message":"Here is all the data",
+            "success":True,
+            "data":serializers.data
+        }
+    )
+def get_job_by_id(request,id):
+    job=get_object_or_404(Job,id=id)
+    serializers=JobSerializer(job)
+    return Response(
+        {
+            "message":"Here is the data",
+            "success":True,
+            "data":serializers.data
+        }
+    )
+def applied_jobs(request, id):
+    job = get_object_or_404(Job,user=id)
+    serializers=JobSerializer(job,many=True)
+    return Response(
+        {
+            "message":"Here is all the data",
+            "success":True,
+            "data":serializers.data
+        }
+    )
