@@ -23,15 +23,12 @@ class UserSerializer(serializers.ModelSerializer):
         # Create the user object
         user = UserModel(**validated_data)
         if "password" in validated_data:
-            validated_data["password"]=make_password(validated_data["password"])
+            validated_data["password"]=user.set_password(validated_data["password"])
         # Set the user as staff if the type is 'Recruiter'
         if validated_data['type'] == 'Recruiter':
             user.is_staff = True
-
-
+            user.is_active=True
         user.save()
-
- 
         if groups is not None:
             user.groups.set(groups) 
 

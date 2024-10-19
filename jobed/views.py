@@ -52,7 +52,8 @@ def register(request):
              
              },
         )
-from django.shortcuts import get_object_or_404
+# from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
 @api_view(['POST'])
 
 def login_view(request):
@@ -62,10 +63,11 @@ def login_view(request):
         password=data.get("password")
       
         try :
-           user = get_object_or_404(UserModel,username=username)
+           user = get_user_model().objects.get(username=username)
            if user:
                 serializer=UserSerializer(user)
-                if user.password ==password:
+                if user.check_password(password):
+                    print("True")
                     refresh = RefreshToken.for_user(user)
                     return Response(
                     {    
