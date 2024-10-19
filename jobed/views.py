@@ -150,7 +150,6 @@ def get_user_data(request):
 
 # Companies 
 from rest_framework.views import APIView
-
 @api_view(["GET"])
 def get_companies(request):
         companies= Company.objects.all()
@@ -187,25 +186,43 @@ def get_company_by_id(request,id):
         )
 @api_view(['GET'])
 def get_job(request):
-    job=Job.objects.all()
-    serializers=JobSerializer(job,many=True)
-    return Response(
-        {
-            "message":"Here is all the data",
-            "success":True,
-            "jobs":serializers.data
-        }
-    )
+    try:
+        job=Job.objects.all()
+        serializers=JobSerializer(job,many=True)
+        return Response(
+            {
+                "message":"Here is all the data",
+                "success":True,
+                "jobs":serializers.data
+            }
+        )
+    except Exception as e:
+        return Response(
+            {
+                "message":"Something went wrong",
+                "error":str(e)
+            }
+        )
+@api_view(["GET"])   
 def get_job_by_id(request,id):
-    job=get_object_or_404(Job,id=id)
-    serializers=JobSerializer(job)
-    return Response(
-        {
-            "message":"Here is the data",
-            "success":True,
-            "job":serializers.data
-        }
-    )
+    try:
+        jobs=get_object_or_404(Job,id=id)
+        serializers=JobSerializer(jobs)
+        return Response(
+            {
+                "message":"Here is the data",
+                "success":True,
+                "job":serializers.data
+            }
+        )
+    except Exception as e:
+        return Response(
+            {
+                "message":"Something went wrong",
+                "error":str(e)
+            }
+        )
+        
 def applied_jobs(request, id):
     job = get_object_or_404(Job,user=id)
     serializers=JobSerializer(job,many=True)

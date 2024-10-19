@@ -40,5 +40,5 @@ class CompanySerializer(serializers.ModelSerializer):
         fields="__all__"
 class JobSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Company
+        model=Job
         fields="__all__"
