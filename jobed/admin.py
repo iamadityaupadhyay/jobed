@@ -12,30 +12,25 @@ class CompanyAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.type == 'Recruiter':
-            return qs.filter(recruiter=request.user)
+            return qs.filter(user=request.user)
         return qs
 
     # Automatically set the recruiter field when a new object is created
     def save_model(self, request, obj, form, change):
         if not change:  # If the object is being created, not updated
-            obj.recruiter = request.user
+            obj.user = request.user
         obj.save()
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.user.type == 'Recruiter':
-            return qs.filter(recruiter=request.user)
-        return qs
-
+   
     # Allow recruiters to only edit their own objects
     def has_change_permission(self, request, obj=None):
         if obj is not None and request.user.type == 'Recruiter':
-            return obj.recruiter == request.user
+            return obj.user == request.user
         return super().has_change_permission(request, obj)
 
     # Allow recruiters to only delete their own objects
     def has_delete_permission(self, request, obj=None):
         if obj is not None and request.user.type == 'Recruiter':
-            return obj.recruiter == request.user
+            return obj.user == request.user
         return super().has_delete_permission(request, obj)
     def has_module_permission(self, request):
         # Only show the model if the user is a staff member (or has specific role)
@@ -62,19 +57,16 @@ class JobAdmin(admin.ModelAdmin):
         obj.save()
     def has_change_permission(self, request, obj=None):
         if obj is not None and request.user.type == 'Recruiter':
-            return obj.recruiter == request.user
+            return obj.user == request.user
         return super().has_change_permission(request, obj)
 
-    # Allow recruiters to only delete their own objects
     def has_delete_permission(self, request, obj=None):
         if obj is not None and request.user.type == 'Recruiter':
-            return obj.recruiter == request.user
+            return obj.user == request.user
         return super().has_delete_permission(request, obj)
     def has_module_permission(self, request):
-        # Only show the model if the user is a staff member (or has specific role)
         return request.user.is_staff
 
     def has_view_permission(self, request, obj=None):
-        # Allow viewing objects even if none have been created yet
         return request.user.is_staff
 admin.site.register(Job, JobAdmin)
