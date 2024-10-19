@@ -37,6 +37,14 @@ class CompanyAdmin(admin.ModelAdmin):
         if obj is not None and request.user.type == 'Recruiter':
             return obj.recruiter == request.user
         return super().has_delete_permission(request, obj)
+    def has_module_permission(self, request):
+        # Only show the model if the user is a staff member (or has specific role)
+        return request.user.is_staff
+
+    def has_view_permission(self, request, obj=None):
+        # Allow viewing objects even if none have been created yet
+        return request.user.is_staff
+    
 admin.site.register(Company, CompanyAdmin)
 
 class JobAdmin(admin.ModelAdmin):
@@ -62,4 +70,11 @@ class JobAdmin(admin.ModelAdmin):
         if obj is not None and request.user.type == 'Recruiter':
             return obj.recruiter == request.user
         return super().has_delete_permission(request, obj)
+    def has_module_permission(self, request):
+        # Only show the model if the user is a staff member (or has specific role)
+        return request.user.is_staff
+
+    def has_view_permission(self, request, obj=None):
+        # Allow viewing objects even if none have been created yet
+        return request.user.is_staff
 admin.site.register(Job, JobAdmin)
