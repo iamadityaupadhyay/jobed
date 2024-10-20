@@ -38,8 +38,24 @@ class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model=Company
         fields="__all__"
+    def create(self, validated_data):
+     try:
+        if 'image' in validated_data:
+            image = validated_data.pop('image')
+            upload_response = cloudinary.uploader.upload(image)
+            validated_data['image'] = upload_response['url']
+     except:
+         print("Someerror")
 class JobSerializer(serializers.ModelSerializer):
     company=CompanySerializer()
     class Meta:
         model=Job
         fields="__all__"
+    def create(self, validated_data):
+     try:
+        if 'image' in validated_data:
+            image = validated_data.pop('image')
+            upload_response = cloudinary.uploader.upload(image)
+            validated_data['image'] = upload_response['url']
+     except:
+         print("Someerror")
