@@ -39,23 +39,31 @@ class CompanySerializer(serializers.ModelSerializer):
         model=Company
         fields="__all__"
     def create(self, validated_data):
-     try:
-        if 'image' in validated_data:
-            image = validated_data.pop('image')
-            upload_response = cloudinary.uploader.upload(image)
-            validated_data['image'] = upload_response['url']
-     except:
-         print("Someerror")
+        try:
+            # Check if the 'image' field is in the validated data
+            if 'image' in validated_data:
+                image = validated_data.pop('image')  # Pop the image out of the validated data
+                # Upload the image to Cloudinary
+                upload_response = cloudinary.uploader.upload(image)
+                # Get the URL from the response and set it in the validated data
+                validated_data['image'] = upload_response['url']
+        except Exception as e:
+            print(f"Error uploading image: {str(e)}")
+        return super().create(validated_data)
 class JobSerializer(serializers.ModelSerializer):
     company=CompanySerializer()
     class Meta:
         model=Job
         fields="__all__"
     def create(self, validated_data):
-     try:
-        if 'image' in validated_data:
-            image = validated_data.pop('image')
-            upload_response = cloudinary.uploader.upload(image)
-            validated_data['image'] = upload_response['url']
-     except:
-         print("Someerror")
+        try:
+            # Check if the 'image' field is in the validated data
+            if 'image' in validated_data:
+                image = validated_data.pop('image')  # Pop the image out of the validated data
+                # Upload the image to Cloudinary
+                upload_response = cloudinary.uploader.upload(image)
+                # Get the URL from the response and set it in the validated data
+                validated_data['image'] = upload_response['url']
+        except Exception as e:
+            print(f"Error uploading image: {str(e)}")
+        return super().create(validated_data)
