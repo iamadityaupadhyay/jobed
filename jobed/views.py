@@ -124,7 +124,6 @@ def logout_view(request):
         
 
 @api_view(['GET'])
-from rest_framework.response import Response
 
 def get_user_data(request):
     if request.user.is_authenticated:
