@@ -21,7 +21,7 @@ class Company(models.Model):
     image = CloudinaryField('image', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     company_address=models.TextField(null=True,blank=True)
-    slug =models.SlugField(max_length=400,null=True)
+    slug =models.SlugField(max_length=400,null=True,blank=True)
     def save(self, *args,**kwrgs):
         if not self.slug:
             self.slug = slugify(self.company_name)
@@ -37,7 +37,7 @@ class Job(models.Model):
     location =models.CharField(max_length=200,null=True,blank=True)
     salary=models.CharField(max_length=200,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    slug =models.SlugField(max_length=400, null=True)
+    slug =models.SlugField(max_length=400, null=True,blank=True)
     def save(self, *args,**kwrgs):
         if not self.slug:
             self.slug = slugify(self.job_title)

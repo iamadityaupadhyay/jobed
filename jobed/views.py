@@ -189,11 +189,15 @@ def get_job(request):
     try:
         job=Job.objects.all()
         serializers=JobSerializer(job,many=True)
+ 
+        print(serializers.data)
+       
         return Response(
             {
                 "message":"Here is all the data",
                 "success":True,
-                "jobs":serializers.data
+                "jobs":serializers.data,
+
             }
         )
     except Exception as e:
