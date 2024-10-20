@@ -124,12 +124,17 @@ def logout_view(request):
         
 
 @api_view(['GET'])
+from rest_framework.response import Response
+
 def get_user_data(request):
     if request.user.is_authenticated:
         user = request.user
         try:
+            # Try to fetch the user's social account linked with Google
             social_account = user.socialaccount_set.get(provider='google')
             extra_data = social_account.extra_data
+            
+            # Return the user and Google profile data
             return Response({
                 'id': user.id,
                 'username': user.username,
@@ -142,10 +147,15 @@ def get_user_data(request):
                     'email': extra_data.get('email'),
                 }
             })
+        except user.socialaccount_set.model.DoesNotExist:
+            # Handle case where there is no linked Google account
+            return Response({'error': 'No Google account linked'}, status=400)
         except Exception as e:
-            return Response({'error': str(e)}, status=400)
-    return Response({'error': 'User not authenticated'}, status=401)
-
+            # Handle other potential errors
+            return Response({'error': f'An error occurred: {str(e)}'}, status=400)
+    else:
+        # Return 401 Unauthorized if the user is not authenticated
+        return Response({'error': 'User not authenticated'}, status=401)
 
 
 # Companies 
