@@ -131,6 +131,7 @@ def get_user_data(request):
         try:
             # Try to fetch the user's social account linked with Google
             social_account = user.socialaccount_set.get(provider='google')
+            
             extra_data = social_account.extra_data
             
             # Return the user and Google profile data
