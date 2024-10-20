@@ -84,10 +84,7 @@ SOCIALACCOUNT_PROVIDERS = {
             'secret': os.getenv('GOOGLE_SECRET'),
             'key': ''
         },
-        'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {
-            'access_type': 'offline',
-        }
+        
     },
     'github': {
         'APP': {
