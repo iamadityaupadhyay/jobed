@@ -1,5 +1,6 @@
 
 from pathlib import Path
+import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8(#@uu1-h_8nsp&h7n=m#dw8s8-x^+ou8ieg(*=v_=qtvlv^fh'
 AUTH_USER_MODEL = 'jobed.UserModel'
@@ -112,7 +113,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
-import os
+
 import dj_database_url
 
 DATABASES = {
