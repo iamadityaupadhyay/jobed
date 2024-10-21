@@ -51,7 +51,7 @@ class Job(models.Model):
             self.job_requirement="Job Requirements will be updated soon please contace the recruiter"
         return super(Job,self).save(*args,**kwrgs)
     def __str__(self):
-#         return self.job_title
+        return self.job_title
 # class Application(models.Model):
 #     applicant_name=models.CharField(max_length=200)
 #     applicant_
