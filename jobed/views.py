@@ -28,10 +28,11 @@ def register(request):
             return Response(
                 {   "success":True,
                     "message": "Successfully Created", 
-                    "data": serializer.data,
+                    "user": serializer.data,
                 },
                
             )
+        
         return Response(
             {
            "error": serializer.errors,

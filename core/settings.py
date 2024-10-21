@@ -117,8 +117,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 import dj_database_url
 
 DATABASES = {
-        'default': dj_database_url.config(default="postgresql://postgres:MbEEkAztKyrsvnYqPxRxnIfPesHDypcT@autorack.proxy.rlwy.net:20109/railway")# Replace with the port from Railway
-    
+        'default': dj_database_url.config(default="postgresql://postgres:MbEEkAztKyrsvnYqPxRxnIfPesHDypcT@autorack.proxy.rlwy.net:20109/railway")
 }
 AUTH_PASSWORD_VALIDATORS = [
     {

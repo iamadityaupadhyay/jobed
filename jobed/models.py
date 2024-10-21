@@ -38,9 +38,15 @@ class Job(models.Model):
     salary=models.CharField(max_length=200,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     slug =models.SlugField(max_length=400, null=True,blank=True)
+    job_description=models.TextField(null=True,blank=True)
+    job_requirement=models.TextField(null=True,blank=True)
     def save(self, *args,**kwrgs):
         if not self.slug:
             self.slug = slugify(self.job_title)
+        if not self.job_description:
+            self.job_description="Job decription will be updated soon please contact the recruiter"
+        if not self.job_requirement:
+            self.job_requirement="Job Requirements will be updated soon please contace the recruiter"
         return super(Job,self).save(*args,**kwrgs)
     def __str__(self):
         return self.job_title
