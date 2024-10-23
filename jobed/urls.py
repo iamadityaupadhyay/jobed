@@ -14,6 +14,7 @@ urlpatterns = [
     path('get_job/',get_job),
     path('get_job_by_id/<int:id>',get_job_by_id),
     path('applied_jobs/',applied_jobs),
+    path("profile/<int:pk>",profile)
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
