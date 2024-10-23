@@ -156,7 +156,7 @@ def profile(request,pk):
     try:
      if request.user.is_authenticated:
         user=get_object_or_404(UserModel,id =pk)
-        serializers=UserSerializer(data=user)
+        serializers=UserSerializer(user)
         return Response(
             {
                 "message":"Here is the user data",
