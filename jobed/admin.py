@@ -8,22 +8,22 @@ admin.site.register(UserModel)
 
 
 class CompanyAdmin(admin.ModelAdmin):
-    # Display only the objects created by the logged-in recruiter
+    
+    exclude = ['user']
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.type == 'Recruiter':
             return qs.filter(user=request.user)
         return qs
 
-    # Automatically set the recruiter when a new job is created
+    
     def save_model(self, request, obj, form, change):
-        if not change:  # If creating a new object
+        if not change: 
             obj.user = request.user
         obj.save()
     
     def has_add_permission(self, request):
-        # Allow users to add objects
-        return request.user.is_staff  # or any other condition like request.user.role == 'recruiter'
+        return request.user.is_staff  
 
     def has_change_permission(self, request, obj=None):
         return request.user.is_staff
@@ -40,23 +40,24 @@ class CompanyAdmin(admin.ModelAdmin):
 admin.site.register(Company, CompanyAdmin)
 
 class JobAdmin(admin.ModelAdmin):
-    # Display only the jobs created by the logged-in recruiter
+    exclude = ['user']
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        if request.user.type == 'Recruiter':
+            form.base_fields['company'].queryset = Company.objects.filter(user=request.user)
+        return form
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
-            # If the user is a superuser, return all objects
             return qs
-        # If the user is a recruiter, filter the queryset to only show their own objects
         return qs.filter(user=request.user)
-    # Automatically set the recruiter when a new job is created
     def save_model(self, request, obj, form, change):
-        if not change:  # If creating a new object
+        if not change: 
             obj.user = request.user
         obj.save()
     
     def has_add_permission(self, request):
-        # Allow users to add objects
-        return request.user.is_staff  # or any other condition like request.user.role == 'recruiter'
+        return request.user.is_staff  
 
     def has_change_permission(self, request, obj=None):
         return request.user.is_staff
