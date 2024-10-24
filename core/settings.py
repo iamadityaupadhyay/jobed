@@ -80,13 +80,14 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://127.1.1.0:8000",
     "http://127.1.1.0:8000",
+    
 
 ]
 CORS_ALLOW_CREDENTIALS = True  
 ROOT_URLCONF = 'core.urls'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
-CSRF_COOKIE_SECURE =False 
+CSRF_COOKIE_SECURE = True 
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = None 
 CSRF_USE_SESSIONS = False 
@@ -94,10 +95,12 @@ CSRF_USE_SESSIONS = False
 from decouple import config
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-        'CLIENT_ID': os.getenv('GOOGLE_CLIENT_ID'),
-        'SECRET': os.getenv('GOOGLE_SECRET'),
+        'APP': {
+            'client_id': os.getenv('GOOGLE_CLIENT_ID'),
+            'secret': os.getenv('GOOGLE_SECRET'),
+            'key': ''
+        },
+        
     },
     'github': {
         'APP': {
