@@ -1,6 +1,14 @@
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from cloudinary_storage.storage import MediaCloudinaryStorage
+from cloudinary_storage.storage import VideoMediaCloudinaryStorage
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8(#@uu1-h_8nsp&h7n=m#dw8s8-x^+ou8ieg(*=v_=qtvlv^fh'
 AUTH_USER_MODEL = 'jobed.UserModel'
@@ -51,8 +59,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST ="smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "uaditya219@gmail.com"
-EMAIL_HOST_PASSWORD = "aditya@2004"
+EMAIL_HOST_USER = "jobedinwebsite@gmail.com"
+EMAIL_HOST_PASSWORD = "Aditya@2004"
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', 
@@ -159,13 +167,6 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Claudinary
-from dotenv import load_dotenv
-import os
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-from cloudinary_storage.storage import MediaCloudinaryStorage
-from cloudinary_storage.storage import VideoMediaCloudinaryStorage
 
 # Load environment variables
 
