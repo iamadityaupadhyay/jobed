@@ -8,7 +8,7 @@ urlpatterns = [
     path("login/",login_view),
     path("logout/",logout_view),
     path('accounts/', include('allauth.urls')),
-    path('user-data/', get_user_data, name='user_data'),
+    path('user-data', get_user_data, name='user_data'),
     path('get_companies/',get_companies),
     path('get_company_by_id/<int:id>',get_company_by_id),
     path('get_job/',get_job),
