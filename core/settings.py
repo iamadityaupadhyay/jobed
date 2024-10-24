@@ -51,7 +51,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Define login redirect URLs
-LOGIN_REDIRECT_URL = 'https://jobed-theta.vercel.app/job'
+LOGIN_REDIRECT_URL = 'https://jobed-theta.vercel.app/'
 LOGOUT_REDIRECT_URL = 'https://jobed-theta.vercel.app/'
 
 
