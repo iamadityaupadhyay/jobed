@@ -129,9 +129,7 @@ def get_user_data(request):
         user = request.user
         try:
             social_account = user.socialaccount_set.get(provider='google')
-            
             extra_data = social_account.extra_data
-
             return Response({
                 'id': user.id,
                 'username': user.username,
