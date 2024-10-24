@@ -53,17 +53,19 @@ from django.contrib.auth import get_user_model
 @api_view(['POST'])
 
 def login_view(request):
+    print(request)
     try:
         data = request.data
+        print(data)
         username=data.get("username")
         password=data.get("password")
       
         try :
+            
            user = get_user_model().objects.get(username=username)
            if user:
                 serializer=UserSerializer(user)
                 if user.check_password(password):
-                    print("True")
                     refresh = RefreshToken.for_user(user)
                     return Response(
                     {    
@@ -81,10 +83,26 @@ def login_view(request):
                         "success":False
                         },
                     )
+           else:
+                UserModel.objects.create_user(username=username,password=password)
+                user = get_user_model().objects.get(username=username)
+                serializer=UserSerializer(user)
+                refresh = RefreshToken.for_user(user)
+                return Response(
+                    {    
+                        "message":"Successfully logged in",
+                        "refresh":str(refresh),
+                        "access":str(refresh.access_token),
+                        "success":True,
+                        "user":serializer.data,
+                        
+                    }
+                )
         except Exception as e:
             return Response(
                 {"message":"Something went wrong, please try again",
-                 "success":False
+                 "success":False,
+                 "error":str(e)
                  },
             )
            
