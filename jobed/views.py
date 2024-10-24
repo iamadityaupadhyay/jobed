@@ -155,7 +155,12 @@ def get_user_data(request):
 def profile(request,pk):
 
     try:
+<<<<<<< HEAD
         user=get_object_or_404(UserModel,id=pk)
+=======
+     if request.user.is_authenticated:
+        user=get_object_or_404(UserModel,id =pk)
+>>>>>>> ec2e7c239c3b9e4e7332df0c588baa389cfacc0e
         serializers=UserSerializer(user)
         return Response(
             {
