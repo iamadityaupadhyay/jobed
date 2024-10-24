@@ -7,6 +7,11 @@ from .serializers import *
 from django.contrib.auth.decorators import login_required
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.shortcuts import *
+from google.oauth2 import id_token
+from google.auth.transport import requests
+from django.contrib.auth import get_user_model
+import jwt
+from django.core.exceptions import ObjectDoesNotExist
 @api_view(['POST'])
 def register(request):
     try:
@@ -48,24 +53,96 @@ def register(request):
              
              },
         )
-# from django.shortcuts import get_object_or_404
-from django.contrib.auth import get_user_model
+User = get_user_model()
+
 @api_view(['POST'])
+def google_login(request):
+        
+        try:
+            credential = request.data.get('credential')
+            print(credential)
+            request = requests.Request()
+            id_info = id_token.verify_oauth2_token(
+                credential,
+                request,
+                '301772127319-m28e15gf0mcpppdvcg9g1drprbdsgtj1.apps.googleusercontent.com'
+            )
+            print(id_info)
+            email = id_info['email']
+            name = id_info.get('name', '')
+            given_name = id_info.get('given_name', '')
+            family_name = id_info.get('family_name', '')
+            picture = id_info.get('picture', '')
+            
+            try:
+                user = User.objects.get(email=email)
+                user.first_name = given_name
+                user.last_name = family_name
+                user.image = picture
+                user.save()
+                
+            except ObjectDoesNotExist:
+                username = email.split('@')[0]
+
+                base_username = username
+                counter = 1
+                while User.objects.filter(username=username).exists():
+                    username = f"{base_username}{counter}"
+                    counter += 1
+                
+                user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    image =picture,
+                    first_name=given_name,
+                    last_name=family_name,
+        
+                    is_active=True
+                )
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+            
+            user_data = {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'image': user.image,
+                'type': user.user_type if hasattr(user, 'user_type') else 'Student'
+            }
+            print(user_data)
+            return Response({
+                'success': True,
+                'token': access_token,
+                'user': user_data
+            }, status=status.HTTP_200_OK)
+            
+        except ValueError as e:
+
+            return Response({
+                'success': False,
+                'message': 'Invalid token'
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def login_view(request):
-    print(request)
     try:
         data = request.data
-        print(data)
         username=data.get("username")
         password=data.get("password")
       
         try :
-            
            user = get_user_model().objects.get(username=username)
            if user:
                 serializer=UserSerializer(user)
                 if user.check_password(password):
+                    print("True")
                     refresh = RefreshToken.for_user(user)
                     return Response(
                     {    
@@ -83,21 +160,6 @@ def login_view(request):
                         "success":False
                         },
                     )
-           else:
-                UserModel.objects.create_user(username=username,password=password)
-                user = get_user_model().objects.get(username=username)
-                serializer=UserSerializer(user)
-                refresh = RefreshToken.for_user(user)
-                return Response(
-                    {    
-                        "message":"Successfully logged in",
-                        "refresh":str(refresh),
-                        "access":str(refresh.access_token),
-                        "success":True,
-                        "user":serializer.data,
-                        
-                    }
-                )
         except Exception as e:
             return Response(
                 {"message":"Something went wrong, please try again",

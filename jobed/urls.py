@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("register/",register),
     path("login/",login_view),
+    path("google-login/",google_login),
     path("logout/",logout_view),
     path('accounts/', include('allauth.urls')),
     path('user-data', get_user_data, name='user_data'),
