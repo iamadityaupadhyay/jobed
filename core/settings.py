@@ -31,8 +31,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',  # For Google OAuth
-    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',    'allauth.socialaccount.providers.github',
     'rest_framework_simplejwt',
     'sslserver',
     'corsheaders',
@@ -81,7 +80,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://127.1.1.0:8000",
     "http://127.1.1.0:8000",
-    
 
 ]
 CORS_ALLOW_CREDENTIALS = True  
@@ -96,12 +94,10 @@ CSRF_USE_SESSIONS = False
 from decouple import config
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        'APP': {
-            'client_id': os.getenv('GOOGLE_CLIENT_ID'),
-            'secret': os.getenv('GOOGLE_SECRET'),
-            'key': ''
-        },
-        
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'CLIENT_ID': os.getenv('GOOGLE_CLIENT_ID'),
+        'SECRET': os.getenv('GOOGLE_SECRET'),
     },
     'github': {
         'APP': {
