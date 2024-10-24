@@ -46,8 +46,14 @@ AUTHENTICATION_BACKENDS = (
 LOGIN_REDIRECT_URL = 'https://jobed-theta.vercel.app/'
 LOGOUT_REDIRECT_URL = 'https://jobed-theta.vercel.app/'
 
-# Configure any email-related settings for account verification (optional)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For testing
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST ="smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "uaditya219@gmail.com"
+EMAIL_HOST_PASSWORD = "aditya@2004"
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.security.SecurityMiddleware',
@@ -62,7 +68,7 @@ MIDDLEWARE = [
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 APPEND_SLASH=False
 CORS_ALLOWED_ORIGINS = [
-    "https://jobedinwebsite-production.up.railway.app",  # Your production URL
+    "https://jobedinwebsite-production.up.railway.app", 
     "https://jobed-theta.vercel.app",  
     "http://localhost:5173",
     "https://127.1.1.0:8000",
