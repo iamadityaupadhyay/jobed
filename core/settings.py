@@ -42,8 +42,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Define login redirect URLs
-LOGIN_REDIRECT_URL = 'https://jobed-theta.vercel.app/'
-LOGOUT_REDIRECT_URL = 'https://jobed-theta.vercel.app/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Configure any email-related settings for account verification (optional)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For testing

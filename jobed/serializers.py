@@ -32,8 +32,19 @@ class UserSerializer(serializers.ModelSerializer):
         return user
      except Exception as e:
         raise serializers.ValidationError(f"Error creating user: {str(e)}")
-
-    
+    def update(self, instance, validated_data):
+        try:
+            if 'image' in validated_data:
+                image = validated_data.pop('image')
+                upload_response = cloudinary.uploader.upload(image)
+                validated_data['image'] = upload_response['url']
+        except Exception as e:
+            print(f"Error uploading image: {str(e)}")
+        return super().update(instance, validated_data)
+class Users(serializers.ModelSerializer):
+    class Meta:
+        model=UserModel
+        fields="__all__"
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model=Company

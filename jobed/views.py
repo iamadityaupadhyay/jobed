@@ -151,12 +151,12 @@ def get_user_data(request):
 
             return Response({'error': f'An error occurred: {str(e)}'}, status=400)
 
-
+@api_view(['GET'])
 def profile(request,pk):
+
     try:
-     if request.user.is_authenticated:
-        user=get_object_or_404(UserModel,id =pk)
-        serializers=UserSerializer(data=user)
+        user=get_object_or_404(UserModel,id=pk)
+        serializers=UserSerializer(user)
         return Response(
             {
                 "message":"Here is the user data",
@@ -164,18 +164,11 @@ def profile(request,pk):
                 "success":True
             }
         )
-     else:
-         return Response(
-             {
-                 "message":"Something went wrong",
-                 "error":str(serializers.error),
-                 "success":False,
-             }
-         )
+    
     except Exception as e:
         return Response(
             {
-                "message":"Someanother error is occuring",
+                "message":"Bedagark is occuring",
                 "success":False,
                 "error":str(e)
             }
