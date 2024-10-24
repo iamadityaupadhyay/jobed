@@ -73,7 +73,7 @@ CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'core.urls'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
-CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = True 
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = None  # or 'Lax', depending on your setup
 
@@ -89,8 +89,8 @@ SOCIALACCOUNT_PROVIDERS = {
     },
     'github': {
         'APP': {
-            'client_id': config('GITHUB_CLIENT_ID'),
-            'secret': config('GITHUB_SECRET'),
+            'client_id':os.getenv('GITHUB_CLIENT_ID'),
+            'secret': os.getenv('GITHUB_SECRET'),
             'key': ''
         }
     }
