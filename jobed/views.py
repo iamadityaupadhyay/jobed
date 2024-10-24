@@ -130,7 +130,7 @@ def google_login(request):
                 'success': False,
                 'message': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+@api_view(['POST'])
 def login_view(request):
     try:
         data = request.data
