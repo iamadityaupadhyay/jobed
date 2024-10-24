@@ -5,6 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8(#@uu1-h_8nsp&h7n=m#dw8s8-x^+ou8ieg(*=v_=qtvlv^fh'
 AUTH_USER_MODEL = 'jobed.UserModel'
 DEBUG = True
+load_dotenv()
 ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     'jazzmin',
@@ -67,7 +68,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://127.1.1.0:8000",
     "http://127.1.1.0:8000",
     
-    # Any other trusted origin
+
 ]
 CORS_ALLOW_CREDENTIALS = True  
 ROOT_URLCONF = 'core.urls'
@@ -75,7 +76,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
 CSRF_COOKIE_SECURE = True 
 SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = None  # or 'Lax', depending on your setup
+SESSION_COOKIE_SAMESITE = None 
+CSRF_USE_SESSIONS = False 
 
 from decouple import config
 SOCIALACCOUNT_PROVIDERS = {
@@ -136,14 +138,13 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://jobedinwebsite-production.up.railway.app",  # Your production URL
+    "https://jobedinwebsite-production.up.railway.app",  
     "https://jobed-theta.vercel.app", 
     "https://127.0.0.1:8000",
-    # Your Vercel app, if needed
+
 ]
 TIME_ZONE = 'UTC'
-CSRF_COOKIE_SECURE = True  # Use secure cookies if on HTTPS
-CSRF_USE_SESSIONS = False 
+
 USE_I18N = True
 
 USE_TZ = True
@@ -161,7 +162,7 @@ from cloudinary_storage.storage import MediaCloudinaryStorage
 from cloudinary_storage.storage import VideoMediaCloudinaryStorage
 
 # Load environment variables
-load_dotenv()
+
 
 # Cloudinary configuration
 cloudinary.config( 
