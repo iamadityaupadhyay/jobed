@@ -98,4 +98,11 @@ class UserSerializer(serializers.ModelSerializer):
         except Exception as e:
             print(f"Error uploading image: {str(e)}")
         return super().update(instance, validated_data)
+class ProfileSerializer(serializers.ModelSerializer):
+    user=UserSerializer()
+    application=ApplicationSerializer(many=True)
+    education=EducationSerializer(many=True)
+    work_experience=WorkExperienceSerializer(many=True)
+    certification=CertificationSerializer(many=True)
+    projects=ProjectsSerializer(many=True)
     
