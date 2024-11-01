@@ -17,16 +17,12 @@ def register(request):
     try:
         data = request.data
         username = data.get('username')
-        type=data.get("type")
-        
         if UserModel.objects.filter(username=username).exists():
             return Response(
                 {"message": "User already exists"},
                 status=status.HTTP_400_BAD_REQUEST
-            )
-        
+            )  
         serializer = UserSerializer(data=data)
-        
         if serializer.is_valid():
             serializer.save()
             print(serializer.data)
@@ -203,32 +199,6 @@ def logout_view(request):
            
         )
         
-
-@api_view(['GET'])
-def get_user_data(request):
-        user = request.user
-        try:
-            social_account = user.socialaccount_set.get(provider='google')
-            extra_data = social_account.extra_data
-            return Response({
-                'id': user.id,
-                'username': user.username,
-                'email': user.email,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'google_data': {
-                    'name': extra_data.get('name'),
-                    'picture': extra_data.get('picture'),
-                    'email': extra_data.get('email'),
-                }
-            })
-        except user.socialaccount_set.model.DoesNotExist:
-           
-            return Response({'error': 'No Google account linked'}, status=400)
-        except Exception as e:
-
-            return Response({'error': f'An error occurred: {str(e)}'}, status=400)
-
 @api_view(['GET'])
 def profile(request,pk):
 

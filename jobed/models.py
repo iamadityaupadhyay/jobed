@@ -24,11 +24,7 @@ class UserModel(AbstractUser):
        ('Blockchain Development', 'Blockchain Development'),
        ('Internet of Things (IoT)', 'Internet of Things (IoT)')
 ]
-     work_experience =models.ForeignKey('WorkExperince',on_delete=models.CASCADE,null=True,blank=True)
-     education =models.ForeignKey('Education',on_delete=models.CASCADE,null=True,blank=True)
-     projects=models.ForeignKey('Projects',on_delete=models.CASCADE,null=True,blank=True)
-     achievements=models.ForeignKey('Achievement',on_delete=models.CASCADE,null=True,blank=True)
-     certifications=models.ForeignKey('Certification',on_delete=models.CASCADE,null=True,blank=True)
+
         
      
      image = CloudinaryField('image', blank=True, null=True)
@@ -74,9 +70,9 @@ class Education(models.Model):
     degree =models.CharField(max_length=200,choices=degree_choice)
     college_name=models.CharField(max_length=200)
     grade=models.CharField(max_length=200)
-    
+    user = models.ForeignKey(UserModel, null=True,on_delete=models.CASCADE,related_name="user_education")
 class Company(models.Model):
-    user=models.ForeignKey(UserModel,on_delete=models.CASCADE,null=True, blank=True)
+    user=models.ForeignKey(UserModel,on_delete=models.CASCADE,null=True, blank=True,related_name="user_company")
     company_name= models.CharField(max_length=200,null=True,blank=True)
     image = CloudinaryField('image', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -89,7 +85,7 @@ class Company(models.Model):
     def __str__(self):
         return self.company_name
 class Job(models.Model):
-    user = models.ForeignKey(UserModel, on_delete=models.CASCADE,related_name="user_job")
+    user = models.ForeignKey(UserModel,null=True, on_delete=models.CASCADE,related_name="user_job")
     company=models.ForeignKey(Company, on_delete=models.CASCADE,related_name="job_company")
     postition=models.CharField(max_length=200,null=True, blank=True)
     job_title=models.CharField(max_length=200,null=True, blank=True)
@@ -145,9 +141,11 @@ class Projects(models.Model):
     repo_link=models.URLField(null=True ,blank=True)
     website_link=models.URLField(null=True ,blank=True)
     skills_used=models.CharField(choices=skill,max_length=200)
+    user = models.ForeignKey(UserModel,null=True, on_delete=models.CASCADE,related_name="user_project")
 class Achievement(models.Model):
     title=models.CharField(null=True ,blank=True)
     description =models.CharField(null=True ,blank=True)
+    user = models.ForeignKey(UserModel,null=True, on_delete=models.CASCADE,related_name="user_achievement")
 class Certification(models.Model):
     title =models.CharField(max_length=200)
     description =models.CharField(max_length=200)
@@ -155,10 +153,11 @@ class Certification(models.Model):
     end_month=models.DateField()
     link =models.URLField(max_length=200)
     skills_used = models.CharField(max_length=200)
+    user = models.ForeignKey(UserModel, null=True,on_delete=models.CASCADE,related_name="user_certification")
     def __str__(self):
         return self.title
-
-class WorkExperince(models.Model):
+    
+class WorkExperience(models.Model):
     tech_cities_choices = [
     ('Bengaluru', 'Bengaluru'),
     ('Hyderabad', 'Hyderabad'),
@@ -241,7 +240,6 @@ class WorkExperince(models.Model):
     ('Thanjavur', 'Thanjavur'),
     ('Tirunelveli', 'Tirunelveli')
 ]
-
     companyName=models.CharField(max_length=200)
     work_type=models.CharField(choices=[('Internship','Internship')      
                                         ,('Part-Time','Part-Time'),
@@ -255,6 +253,7 @@ class WorkExperince(models.Model):
     ), 
     (
     'No','No')])
+    user = models.ForeignKey(UserModel,null=True, on_delete=models.CASCADE,related_name="user_work")
     def __str__(self):
         return self.companyName
     
@@ -262,3 +261,4 @@ class Application(models.Model):
     name=models.CharField(max_length=200)
     phone_number = models.CharField(max_length=200)
     age=models.CharField(max_length=200)
+    user = models.ForeignKey(UserModel,null=True, on_delete=models.CASCADE,related_name="user_application")
