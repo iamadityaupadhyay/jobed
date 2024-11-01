@@ -60,13 +60,7 @@ class ProjectsSerializer(serializers.ModelSerializer):
         model=Projects
         fields="__all__"
 class UserSerializer(serializers.ModelSerializer):
-    application=ApplicationSerializer(many=True)
-    education=EducationSerializer(many=True)
-    work_experience=WorkExperienceSerializer(many=True)
-    certification=CertificationSerializer(many=True)
-    projects=ProjectsSerializer(many=True)
-    
-        
+      
     class Meta:
         model = UserModel
         fields = "__all__"
