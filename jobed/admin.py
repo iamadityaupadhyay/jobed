@@ -38,7 +38,6 @@ class CompanyAdmin(admin.ModelAdmin):
         return request.user.is_staff
     
 admin.site.register(Company, CompanyAdmin)
-
 class JobAdmin(admin.ModelAdmin):
     exclude = ['user']
     def get_form(self, request, obj=None, **kwargs):
@@ -71,3 +70,5 @@ class JobAdmin(admin.ModelAdmin):
     def has_view_permission(self, request, obj=None):
         return request.user.is_staff
 admin.site.register(Job, JobAdmin)
+admin.site.register(WorkExperience)
+admin.site.register(Education)

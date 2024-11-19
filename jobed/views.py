@@ -312,3 +312,264 @@ def applied_jobs(request, id):
             "job":serializers.data
         }
     )
+@api_view(["PUT"])
+def profile_update(request,id):
+    if request.method=="PUT":
+        data=request.data
+        user=get_object_or_404(UserModel,id=id)
+        serializer=ProfileSerializer(user,data=data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "message":"Successfully updated",
+                    "success":True,
+                    "data":serializer.data
+                }
+            )
+        return Response(
+            {
+                "message":"Something went wrong",
+                "success":False,
+                "error":serializer.errors
+            }
+        )
+@api_view(['GET'])
+def get_profiles(request):
+    try:
+        
+        queryset=UserModel.objects.all()
+        serializer = UserSerializer(queryset,many=True)
+        print(serializer.data)
+        return Response(
+            {   
+                "data":serializer.data
+            }
+        )
+    except Exception as e:
+        return Response(
+            {
+                "Error":str(e)
+            }
+        )
+@api_view(["GET"])
+def get_profile_by_id(request,id):
+    #  getting the user first
+    response={}
+    try:  
+        user = get_object_or_404(UserModel, id =id)
+        user_s=UserSerializer(user)
+    except UserModel.DoesNotExist:
+        response['error']=ValueError
+    try:
+        user_work=user.user_work.all()
+        user_projects=user.user_project.all()
+        user_education=user.user_education.all()
+        user_certificates=user.user_certification.all()
+        # calling serializer 
+        work_s=WorkExperienceSerializer(user_work,many=True)
+        project_s=ProjectsSerializer(user_projects,many=True)
+        education_s=EducationSerializer(user_education,many=True)
+        certificates_s=CertificationSerializer(user_certificates,many=True)
+        response['user']=user_s.data
+        response['user_work']=work_s.data
+        response['user_projects']=project_s.data
+        response['user_education']=education_s.data
+        response['user_certificates']=certificates_s.data
+        response["success"]=True
+        return Response(
+        {"data" : response}
+    )
+    except Exception as e:
+        response['exception']=e
+    print(response)
+    
+    
+    
+# updating skill 
+# skill getting working fine
+@api_view(["GET"])
+def skill_get(request,id):
+    try:
+        if request.method=="GET":
+            user=get_object_or_404(UserModel,id=id)
+            skill=get_object_or_404(Skill,user=user)
+            serializers=SkillSerializer(skill)
+            return Response(
+                serializers.data,    
+            )
+    except Exception as e:
+        return Response(
+            {"error":str(e)}
+        )
+@api_view(["PUT"])
+def skill_update(request ,id):
+    try:
+        if request.method=="PUT":
+            data=request.data
+            print(data)
+            # now the data is here now we want to update 
+            # calling the serializer
+            user = get_object_or_404(UserModel,id=id)
+            skill, created = Skill.objects.get_or_create(user=user)
+            # in serializer the first parameter is telling which model is to be checked for updating
+            serializers = SkillSerializer(skill, data=data, partial=True)
+            if serializers.is_valid():
+                print("ok")
+                serializers.save()
+                return Response(
+                    {"message":"successfully updated the skills",
+                    "data":serializers.data,
+                    "success":True
+                    
+                    }
+                )
+            else:
+                return Response(
+                    {
+                        "message":"Something went wrong",
+                        "error":serializers.errors
+                    }
+                )
+    except Exception as e:
+        return Response(
+           { "error":str(e)}
+        )  
+@api_view(["PUT"])  
+def about_update(request,id):
+    if request.method=="PUT":
+        try:
+            data=request.data
+            # now we have the data in json format 
+            # calling the serializer
+            print(data) 
+            user = get_object_or_404(UserModel,id=id)
+            about, created = About.objects.get_or_create(user=user)
+            # in serializer the first parameter is telling which model is to be checked for updating
+            serializers = AboutSerializer(about, data=data, partial=True)
+            if serializers.is_valid():
+                serializers.save()
+                return Response(
+                {
+                    "message":"Successfully updated",
+                    "success":True,
+                    "data":serializers.data
+                }
+            )
+            else:
+                return Response(
+                    {
+                        "error":serializers.errors
+                    }
+                )
+        except Exception as e:
+            return Response (
+                {
+                    "message":"some error occured",
+                    "success":False,
+                    "error":str(e)
+                }
+            )
+@api_view(["GET"])
+def about_get(request, id):
+    try:
+        if request.method=="GET":
+            user= get_object_or_404(UserModel,id=id)
+            about = About.objects.get(user=user)
+            serializers=AboutSerializer(about)
+            return Response(
+                {
+                    "message":"successfully retrieved",
+                    "data":serializers.data,
+                    "success":True
+                }
+            )
+          
+    except Exception as e:
+        return Response(
+            {
+                "message":"some error occured",
+                "error":str(e)
+            }
+        )
+@api_view(['PUT'])
+def education_update(request,id):
+    try:
+        if request.method=="PUT":
+            data=request.data
+            print(data)
+            user=get_object_or_404(UserModel,id=id)
+            # {'education': [{'college_name': 'Goel ', 'college_address': 'Lucknow', 'percentage': '9'}, 
+            # {'college_name': 'Gitm', 'college_address': 'lko', 'percentage': '9'}]}
+            education_response=[]
+            for education in data.get('education',[]):
+                edu_id=education.get("id")
+                if edu_id:
+                        education_instance=Education.objects.get(id=edu_id)
+                        serializers=EducationSerializer(education_instance,data=education,partial=True)
+                else:
+                    # if there is not in model 
+                    serializers = EducationSerializer(data={**education, "user": user.id})
+                if serializers.is_valid():
+                    serializers.save()
+                    education_response.append(serializers.data)
+            return Response(
+                {
+                    "message":"successfull",
+                    "data":education_response
+                    
+                },
+                
+            )
+    except Exception as e:
+        return Response(
+            {
+                "message":"something is wrong",
+                "error":str(e)
+            }
+        )
+@api_view(['PUT'])
+def experience_update(request,id):
+    try:
+        if request.method=="PUT":
+            data=request.data
+            # now we have the data 
+            print(data)
+            user=get_object_or_404(UserModel,id=id)
+            experience_response=[]
+            error=[]
+            # now we have so many experiences in the data fiels
+            for exp in data.get("experience",[]):
+                exp_id=exp.get("id")
+                
+                if exp_id:
+                    # it represents that we have the experience 
+                    # now updating 
+                    exp_instance= WorkExperience.objects.get(id=exp_id)
+                    print(exp_id)
+                    serializers= WorkExperienceSerializer(exp_instance,data=exp,partial=True)
+                else:
+                    # it means we dont have the exp in workexp table
+                    serializers=WorkExperienceSerializer(data={**exp, "user": user.id})
+                    print("here")
+                if serializers.is_valid():
+                    serializers.save()
+                    experience_response.append(serializers.data)
+                else:
+                    error.append(serializers.errors)
+                    print(error)
+            return Response(
+                    {
+                        "message":"successfully updated",
+                        "data":serializers.data 
+                    },
+                
+                )
+    except Exception as e:
+        return Response(
+            {
+                "message":"something is not going smooth",
+                "error":str(e)
+            }
+        )

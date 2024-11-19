@@ -31,46 +31,10 @@ class UserModel(AbstractUser):
      mobile_number =models.CharField(max_length=200,null=True, blank=True)
      type =models.CharField(choices=USER_TYPE_CHOICES ,max_length=50 ,null=True, blank=True)
      dob=models.DateField(null=True)
-     skills=models.CharField(max_length=200, null=True,blank =True)
-     interests=models.CharField(choices=interest_choice, null=True, blank =True, max_length=200)
      groups = models.ManyToManyField(Group, blank=True)
      def __str__(self):
          return self.first_name
     
-class Education(models.Model):
-    degree_choice =degree_choices = [
-    ('Bachelor of Arts (B.A.)', 'Bachelor of Arts (B.A.)'),
-    ('Bachelor of Science (B.Sc.)', 'Bachelor of Science (B.Sc.)'),
-    ('Bachelor of Commerce (B.Com.)', 'Bachelor of Commerce (B.Com.)'),
-    ('Bachelor of Technology (B.Tech.)', 'Bachelor of Technology (B.Tech.)'),
-    ('Bachelor of Engineering (B.E.)', 'Bachelor of Engineering (B.E.)'),
-    ('Bachelor of Medicine, Bachelor of Surgery (MBBS)', 'Bachelor of Medicine, Bachelor of Surgery (MBBS)'),
-    ('Bachelor of Dental Surgery (BDS)', 'Bachelor of Dental Surgery (BDS)'),
-    ('Bachelor of Business Administration (BBA)', 'Bachelor of Business Administration (BBA)'),
-    ('Bachelor of Computer Applications (BCA)', 'Bachelor of Computer Applications (BCA)'),
-    ('Bachelor of Pharmacy (B.Pharm)', 'Bachelor of Pharmacy (B.Pharm)'),
-    ('Bachelor of Education (B.Ed.)', 'Bachelor of Education (B.Ed.)'),
-    ('Bachelor of Law (LLB)', 'Bachelor of Law (LLB)'),
-    ('Master of Arts (M.A.)', 'Master of Arts (M.A.)'),
-    ('Master of Science (M.Sc.)', 'Master of Science (M.Sc.)'),
-    ('Master of Commerce (M.Com.)', 'Master of Commerce (M.Com.)'),
-    ('Master of Technology (M.Tech.)', 'Master of Technology (M.Tech.)'),
-    ('Master of Engineering (M.E.)', 'Master of Engineering (M.E.)'),
-    ('Master of Business Administration (MBA)', 'Master of Business Administration (MBA)'),
-    ('Master of Computer Applications (MCA)', 'Master of Computer Applications (MCA)'),
-    ('Doctor of Medicine (MD)', 'Doctor of Medicine (MD)'),
-    ('Doctor of Philosophy (Ph.D.)', 'Doctor of Philosophy (Ph.D.)'),
-    ('Diploma in Engineering', 'Diploma in Engineering'),
-    ('Diploma in Pharmacy', 'Diploma in Pharmacy'),
-    ('Post Graduate Diploma', 'Post Graduate Diploma')
-]
-
-    start_year=models.DateField()
-    end_year =models.DateField()
-    degree =models.CharField(max_length=200,choices=degree_choice)
-    college_name=models.CharField(max_length=200)
-    grade=models.CharField(max_length=200)
-    user = models.ForeignKey(UserModel, null=True,on_delete=models.CASCADE,related_name="user_education")
 class Company(models.Model):
     user=models.ForeignKey(UserModel,on_delete=models.CASCADE,null=True, blank=True,related_name="user_company")
     company_name= models.CharField(max_length=200,null=True,blank=True)
@@ -158,107 +122,65 @@ class Certification(models.Model):
         return self.title
     
 class WorkExperience(models.Model):
-    tech_cities_choices = [
-    ('Bengaluru', 'Bengaluru'),
-    ('Hyderabad', 'Hyderabad'),
-    ('Pune', 'Pune'),
-    ('Chennai', 'Chennai'),
-    ('Mumbai', 'Mumbai'),
-    ('Delhi', 'Delhi'),
-    ('Gurugram', 'Gurugram'),
-    ('Noida', 'Noida'),
-    ('Kolkata', 'Kolkata'),
-    ('Ahmedabad', 'Ahmedabad'),
-    ('Coimbatore', 'Coimbatore'),
-    ('Trivandrum', 'Trivandrum'),
-    ('Kochi', 'Kochi'),
-    ('Indore', 'Indore'),
-    ('Jaipur', 'Jaipur'),
-    ('Nagpur', 'Nagpur'),
-    ('Mysuru', 'Mysuru'),
-    ('Lucknow', 'Lucknow'),
-    ('Surat', 'Surat'),
-    ('Bhubaneswar', 'Bhubaneswar'),
-    ('Visakhapatnam', 'Visakhapatnam'),
-    ('Vadodara', 'Vadodara'),
-    ('Patna', 'Patna'),
-    ('Chandigarh', 'Chandigarh'),
-    ('Bhopal', 'Bhopal'),
-    ('Raipur', 'Raipur'),
-    ('Vijayawada', 'Vijayawada'),
-    ('Ranchi', 'Ranchi'),
-    ('Jamshedpur', 'Jamshedpur'),
-    ('Kanpur', 'Kanpur'),
-    ('Agra', 'Agra'),
-    ('Nashik', 'Nashik'),
-    ('Gwalior', 'Gwalior'),
-    ('Madurai', 'Madurai'),
-    ('Rajkot', 'Rajkot'),
-    ('Udaipur', 'Udaipur'),
-    ('Aurangabad', 'Aurangabad'),
-    ('Pondicherry', 'Pondicherry'),
-    ('Gandhinagar', 'Gandhinagar'),
-    ('Dehradun', 'Dehradun'),
-    ('Shimla', 'Shimla'),
-    ('Mangalore', 'Mangalore'),
-    ('Tiruchirappalli', 'Tiruchirappalli'),
-    ('Kozhikode', 'Kozhikode'),
-    ('Vellore', 'Vellore'),
-    ('Amritsar', 'Amritsar'),
-    ('Faridabad', 'Faridabad'),
-    ('Ghaziabad', 'Ghaziabad'),
-    ('Meerut', 'Meerut'),
-    ('Durgapur', 'Durgapur'),
-    ('Siliguri', 'Siliguri'),
-    ('Jodhpur', 'Jodhpur'),
-    ('Aligarh', 'Aligarh'),
-    ('Allahabad (Prayagraj)', 'Allahabad (Prayagraj)'),
-    ('Varanasi', 'Varanasi'),
-    ('Panaji', 'Panaji'),
-    ('Guntur', 'Guntur'),
-    ('Hubli', 'Hubli'),
-    ('Belgaum', 'Belgaum'),
-    ('Salem', 'Salem'),
-    ('Thane', 'Thane'),
-    ('Rourkela', 'Rourkela'),
-    ('Jabalpur', 'Jabalpur'),
-    ('Srinagar', 'Srinagar'),
-    ('Ujjain', 'Ujjain'),
-    ('Thiruvananthapuram', 'Thiruvananthapuram'),
-    ('Vapi', 'Vapi'),
-    ('Anand', 'Anand'),
-    ('Haldwani', 'Haldwani'),
-    ('Moradabad', 'Moradabad'),
-    ('Saharanpur', 'Saharanpur'),
-    ('Jalgaon', 'Jalgaon'),
-    ('Satara', 'Satara'),
-    ('Tumkur', 'Tumkur'),
-    ('Karimnagar', 'Karimnagar'),
-    ('Bellary', 'Bellary'),
-    ('Palakkad', 'Palakkad'),
-    ('Erode', 'Erode'),
-    ('Thanjavur', 'Thanjavur'),
-    ('Tirunelveli', 'Tirunelveli')
-]
-    companyName=models.CharField(max_length=200)
-    work_type=models.CharField(choices=[('Internship','Internship')      
-                                        ,('Part-Time','Part-Time'),
-                                        ('Full-Time','Full-Time')])
-    company_website =models.CharField(max_length=200)
-    location =models.CharField(max_length=200,choices=tech_cities_choices)
-    start_date=models.DateField()
-    end_date =models.DateField(null=True,blank=True)
-    working=models.CharField(choices=[(
-        'Working Currently','Working Currently'
-    ), 
-    (
-    'No','No')])
+    company_name=models.CharField(max_length=200,null=True,blank=True)
+    work_type=models.CharField(max_length=200,null=True,blank=True)
+    location =models.CharField(max_length=200,null=True,blank=True)
+    start_date=models.CharField(max_length=200,null=True,blank=True)
+    postition=models.CharField(max_length=200,null=True,blank=True)
+    end_date =models.CharField(max_length=100,null=True,blank=True)
+    responsibility=models.CharField(max_length=5000,null=True,blank=True)
     user = models.ForeignKey(UserModel,null=True, on_delete=models.CASCADE,related_name="user_work")
     def __str__(self):
-        return self.companyName
-    
+        return self.company_name
+class Education(models.Model):
+    degree_choice = degree_choices = [
+    ('Bachelor of Arts (B.A.)', 'Bachelor of Arts (B.A.)'),
+    ('Bachelor of Science (B.Sc.)', 'Bachelor of Science (B.Sc.)'),
+    ('Bachelor of Commerce (B.Com.)', 'Bachelor of Commerce (B.Com.)'),
+    ('Bachelor of Technology (B.Tech.)', 'Bachelor of Technology (B.Tech.)'),
+    ('Bachelor of Engineering (B.E.)', 'Bachelor of Engineering (B.E.)'),
+    ('Bachelor of Medicine, Bachelor of Surgery (MBBS)', 'Bachelor of Medicine, Bachelor of Surgery (MBBS)'),
+    ('Bachelor of Dental Surgery (BDS)', 'Bachelor of Dental Surgery (BDS)'),
+    ('Bachelor of Business Administration (BBA)', 'Bachelor of Business Administration (BBA)'),
+    ('Bachelor of Computer Applications (BCA)', 'Bachelor of Computer Applications (BCA)'),
+    ('Bachelor of Pharmacy (B.Pharm)', 'Bachelor of Pharmacy (B.Pharm)'),
+    ('Bachelor of Education (B.Ed.)', 'Bachelor of Education (B.Ed.)'),
+    ('Bachelor of Law (LLB)', 'Bachelor of Law (LLB)'),
+    ('Master of Arts (M.A.)', 'Master of Arts (M.A.)'),
+    ('Master of Science (M.Sc.)', 'Master of Science (M.Sc.)'),
+    ('Master of Commerce (M.Com.)', 'Master of Commerce (M.Com.)'),
+    ('Master of Technology (M.Tech.)', 'Master of Technology (M.Tech.)'),
+    ('Master of Engineering (M.E.)', 'Master of Engineering (M.E.)'),
+    ('Master of Business Administration (MBA)', 'Master of Business Administration (MBA)'),
+    ('Master of Computer Applications (MCA)', 'Master of Computer Applications (MCA)'),
+    ('Doctor of Medicine (MD)', 'Doctor of Medicine (MD)'),
+    ('Doctor of Philosophy (Ph.D.)', 'Doctor of Philosophy (Ph.D.)'),
+    ('Diploma in Engineering', 'Diploma in Engineering'),
+    ('Diploma in Pharmacy', 'Diploma in Pharmacy'),
+    ('Post Graduate Diploma', 'Post Graduate Diploma')
+]
+
+    start_year=models.CharField(max_length=50)
+    end_year =models.CharField(max_length=50)
+    degree =models.CharField(max_length=200,choices=degree_choice)
+    college_name=models.CharField(max_length=200)
+    grade=models.CharField(max_length=200)
+    user = models.ForeignKey(UserModel, null=True,on_delete=models.CASCADE,related_name="user_education")
+    def __str__(self):
+        return self.college_name
+
 class Application(models.Model):
     name=models.CharField(max_length=200)
     phone_number = models.CharField(max_length=200)
     age=models.CharField(max_length=200)
     user = models.ForeignKey(UserModel,null=True, on_delete=models.CASCADE,related_name="user_application")
+class Skill(models.Model):
+    skill=models.CharField(max_length=2000)
+    user = models.ForeignKey(UserModel,on_delete=models.CASCADE, related_name="user_skill")
+class Interest(models.Model):
+    
+    interest =models.CharField(max_length=2000,null=True,blank=True)
+    user =models.ForeignKey(UserModel,on_delete=models.CASCADE, related_name="user_interest")
+class About(models.Model):
+    user =models.ForeignKey(UserModel,on_delete=models.CASCADE, related_name="user_about")
+    about=models.CharField(max_length=5000,null=True,blank=True)
